@@ -1,0 +1,8 @@
+Run these commands in your terminal within the 'magazin' folder:
+
+git init
+git add .
+git commit -m 'Initial upload of magazin project'
+git branch -M main
+git remote add origin https://github.com/abdurahmohamidullayev063/magazin.git
+git push -u origin main

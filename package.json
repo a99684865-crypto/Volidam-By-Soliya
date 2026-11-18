@@ -1,0 +1,23 @@
+{
+  "name": "magazin",
+  "version": "1.0.0",
+  "description": "VOLIDAM by Soliya — Online Boutique & Telegram Bot",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "boutique",
+    "telegram-bot",
+    "express"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "express": "^5.3.0",
+    "telegraf": "^4.12.2"
+  }
+}
+
+

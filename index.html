@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="uz" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VOLIDAM by Soliya — Premium Boutique</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        gold: {
+                            50: '#fbf7ed',
+                            100: '#f5edd6',
+                            400: '#e0be53',
+                            500: '#d4af37',
+                            600: '#b89728',
+                            700: '#94771e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 3px; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes popIn { 0% { opacity: 0; transform: scale(0.9) translateY(18px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
+        @keyframes slideInRight { from { transform: translateX(100%); opacity: 0.7; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes cardUp { from { opacity: 0; transform: translateY(32px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes floatSlow { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
+        @keyframes goldGlow { 0%, 100% { box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); } 50% { box-shadow: 0 0 30px rgba(212, 175, 55, 0.75); } }
+        @keyframes shimmer { 0% { transform: translateX(-120%) skewX(-20deg); } 100% { transform: translateX(220%) skewX(-20deg); } }
+        @keyframes heroZoom { 0% { transform: scale(1); } 50% { transform: scale(1.06); } 100% { transform: scale(1); } }
+        @keyframes heartPop { 0% { transform: scale(1); } 35% { transform: scale(1.55); } 70% { transform: scale(0.9); } 100% { transform: scale(1); } }
+        @keyframes badgeBump { 0% { transform: scale(1); } 50% { transform: scale(1.55); } 100% { transform: scale(1); } }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-7px); } 40%, 80% { transform: translateX(7px); } }
+
+        .anim-fade { animation: fadeIn 0.25s ease both; }
+        .anim-pop { animation: popIn 0.32s cubic-bezier(0.16, 1, 0.3, 1) both; }
+        .anim-drawer { animation: slideInRight 0.36s cubic-bezier(0.16, 1, 0.3, 1) both; }
+        .anim-card { animation: cardUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) both; }
+        .anim-float { animation: floatSlow 3.5s ease-in-out infinite; }
+        .anim-glow { animation: goldGlow 3s ease-in-out infinite; }
+        .anim-hero-bg { animation: heroZoom 18s ease-in-out infinite; }
+        .heart-pop { animation: heartPop 0.45s cubic-bezier(0.16, 1, 0.3, 1); }
+        .badge-bump { animation: badgeBump 0.38s cubic-bezier(0.16, 1, 0.3, 1); }
+        .anim-shake { animation: shake 0.4s ease; }
+
+        .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        .btn-shimmer { position: relative; overflow: hidden; }
+        .btn-shimmer::after { content: ''; position: absolute; top: 0; left: 0; width: 45%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent); transform: translateX(-120%) skewX(-20deg); }
+        .btn-shimmer:hover::after { animation: shimmer 0.85s ease; }
+
+        .product-card { transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease; }
+        .product-card:hover { transform: translateY(-8px); border-color: rgba(212, 175, 55, 0.5); box-shadow: 0 20px 30px -10px rgba(212, 175, 55, 0.2); }
+
+        button, a { -webkit-tap-highlight-color: transparent; }
+        button:not(:disabled):active { transform: scale(0.94); }
+        button { transition: transform 0.14s ease, background-color 0.25s ease, color 0.25s ease, opacity 0.25s ease, box-shadow 0.25s ease; }
+    </style>
+</head>
+<body class="bg-[#faf9f6] text-gray-900 font-sans antialiased selection:bg-gold-500 selection:text-white">
+
+    <!-- Top Announcement Bar -->
+    <div class="bg-gray-900 text-gold-400 text-xs py-2.5 px-4 text-center tracking-widest uppercase font-medium flex items-center justify-center gap-2">
+        <i class="fa-solid fa-gem text-gold-500 animate-pulse"></i>
+        <span>VOLIDAM by Soliya — Hashamat va nafosat uyg'unligi | O'zbekiston bo'ylab yetkazib berish</span>
+    </div>
+
+    <!-- Navigation Bar -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="#home" class="flex items-center space-x-3 group">
+                <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-gold-500 shadow-md group-hover:scale-110 transition duration-300 bg-gold-100 flex items-center justify-center font-serif font-bold text-gold-700 text-xl anim-glow">V</div>
+                <div>
+                    <span class="font-serif text-xl sm:text-2xl font-bold tracking-wider text-gray-900 block leading-none group-hover:text-gold-600 transition">VOLIDAM</span>
+                    <span class="text-[10px] sm:text-xs tracking-[0.25em] text-gold-600 font-semibold uppercase">by Soliya</span>
+                </div>
+            </a>
+
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium tracking-wide">
+                <a href="#home" class="relative py-1 hover:text-gold-600 transition">Bosh sahifa</a>
+                <a href="#catalog" class="relative py-1 hover:text-gold-600 transition">Katalog</a>
+                <a href="#about" class="relative py-1 hover:text-gold-600 transition">Brend haqida</a>
+                <a href="#contact" class="relative py-1 hover:text-gold-600 transition">Aloqa</a>
+            </nav>
+
+            <div class="flex items-center space-x-3">
+                <button onclick="toggleWishlistModal()" class="relative bg-gray-100 hover:bg-gold-500 hover:text-white p-2.5 rounded-full transition duration-300 w-11 h-11 flex items-center justify-center shadow-sm">
+                    <i class="fa-regular fa-heart text-lg"></i>
+                    <span id="wishlist-badge" class="absolute -top-1 -right-1 bg-gold-600 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold shadow">0</span>
+                </button>
+                <button onclick="toggleCart()" class="relative bg-gray-100 hover:bg-gold-500 hover:text-white p-2.5 rounded-full transition duration-300 w-11 h-11 flex items-center justify-center shadow-sm">
+                    <i class="fa-solid fa-shopping-bag text-lg"></i>
+                    <span id="cart-badge" class="absolute -top-1 -right-1 bg-gold-600 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold shadow">0</span>
+                </button>
+                <button onclick="toggleMobileMenu()" class="md:hidden text-gray-700 hover:text-gold-600 p-2">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b px-4 pt-2 pb-4 space-y-2 anim-fade">
+            <a href="#home" onclick="toggleMobileMenu()" class="block py-2 text-sm font-medium hover:text-gold-600">Bosh sahifa</a>
+            <a href="#catalog" onclick="toggleMobileMenu()" class="block py-2 text-sm font-medium hover:text-gold-600">Katalog</a>
+            <a href="#about" onclick="toggleMobileMenu()" class="block py-2 text-sm font-medium hover:text-gold-600">Brend haqida</a>
+            <a href="#contact" onclick="toggleMobileMenu()" class="block py-2 text-sm font-medium hover:text-gold-600">Aloqa</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative bg-gray-900 text-white py-24 sm:py-32 overflow-hidden">
+        <div class="absolute inset-0 opacity-45 bg-cover bg-center anim-hero-bg" style="background-image: url('3.jpg');"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-gray-950 via-gray-900/85 to-transparent"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="max-w-xl anim-card" style="animation-delay: 150ms;">
+                <span class="inline-block text-gold-400 text-xs font-bold tracking-[0.3em] uppercase bg-gold-500/20 px-3.5 py-1.5 rounded-full border border-gold-500/30 anim-float">Premyera Kolleksiya</span>
+                <h1 class="font-serif text-4xl sm:text-6xl font-bold mt-4 mb-6 leading-tight">Nafislik va Qulaylik SIZ uchun</h1>
+                <p class="text-gray-300 text-sm sm:text-base mb-8 leading-relaxed">VOLIDAM by Soliya brendining eksklyuziv to'plami bilan har kuni mukammal va jozibali ko'rining.</p>
+                <div class="flex flex-wrap gap-4">
+                    <a href="#catalog" class="btn-shimmer bg-gold-500 hover:bg-gold-600 text-gray-950 font-semibold px-8 py-3.5 rounded-xl shadow-lg transition duration-300 uppercase text-xs tracking-wider active:scale-95">Katalogni ko'rish</a>
+                    <a href="#contact" class="border border-white/40 hover:border-gold-500 hover:text-gold-400 text-white font-semibold px-8 py-3.5 rounded-xl transition duration-300 uppercase text-xs tracking-wider active:scale-95">Bog'lanish</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Catalog Section -->
+    <main id="catalog" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6 reveal">
+            <div>
+                <span class="text-gold-600 font-semibold text-xs tracking-[0.25em] uppercase">Eksklyuziv Assortiment</span>
+                <h2 class="font-serif text-3xl sm:text-4xl font-bold mt-2 text-gray-900">Mahsulotlar Katalogi (27 ta model)</h2>
+                <div class="w-20 h-1 bg-gold-500 mt-4 rounded-full"></div>
+            </div>
+            <div class="flex flex-wrap items-center gap-3">
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                        <i class="fa-solid fa-search"></i>
+                    </span>
+                    <input type="search" id="search-input" name="catalog-search-query" autocomplete="off" oninput="onSearchInput(event)" placeholder="Mahsulotni qidirish..." class="pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20 w-64 shadow-sm transition">
+                </div>
+                <select id="sort-select" onchange="applyView()" class="py-2.5 px-4 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-gold-500 shadow-sm text-gray-700 cursor-pointer">
+                    <option value="default">Saralash: Asosiy</option>
+                    <option value="price-asc">Narx: Arzondan qimmatga</option>
+                    <option value="price-desc">Narx: Qimmatdan arzonga</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8" id="product-grid"></div>
+    </main>
+
+    <!-- About Section -->
+    <section id="about" class="bg-white py-20 border-t border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 reveal">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="grid grid-cols-2 gap-4">
+                    <img src="3.jpg" alt="Model 1" class="rounded-2xl shadow-lg object-cover h-72 w-full hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/400x500/111/d4af37?text=VOLIDAM'">
+                    <img src="4.jpg" alt="Model 2" class="rounded-2xl shadow-lg object-cover h-72 w-full mt-8 hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/400x500/111/d4af37?text=VOLIDAM'">
+                </div>
+                <div>
+                    <span class="text-gold-600 font-semibold text-xs tracking-[0.25em] uppercase">Biz Haqimizda</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl font-bold mt-2 mb-6 text-gray-900">VOLIDAM by Soliya</h2>
+                    <p class="text-gray-600 text-sm sm:text-base leading-relaxed mb-4">
+                        Bizning brendimiz har bir ayolning o'ziga xos go'zalligi va nafosatini ta'kidlash uchun yaratilgan. Yuqori sifatli materiallar, mukammal bichim va zamonaviy dizayn uyg'unligi — bizning asosiy ustunligimizdir.
+                    </p>
+                    <p class="text-gray-700 text-sm font-medium mb-6 flex items-center gap-2">
+                        <i class="fa-solid fa-location-dot text-gold-600"></i>
+                        <span>Manzil: Toshkent shahri, Tinchlik, Jahon School to'g'risida</span>
+                    </p>
+                    <div class="grid grid-cols-3 gap-6 pt-4 border-t border-gray-100">
+                        <div class="hover:-translate-y-1 transition duration-300">
+                            <span class="block font-serif text-2xl font-bold text-gold-600">100%</span>
+                            <span class="text-xs text-gray-500 uppercase tracking-wider">Sifat kafolati</span>
+                        </div>
+                        <div class="hover:-translate-y-1 transition duration-300">
+                            <span class="block font-serif text-2xl font-bold text-gold-600">VIP</span>
+                            <span class="text-xs text-gray-500 uppercase tracking-wider">Xizmat</span>
+                        </div>
+                        <div class="hover:-translate-y-1 transition duration-300">
+                            <span class="block font-serif text-2xl font-bold text-gold-600">Tez</span>
+                            <span class="text-xs text-gray-500 uppercase tracking-wider">Yetkazish</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="bg-gray-900 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center reveal">
+            <span class="text-gold-400 font-semibold text-xs tracking-[0.25em] uppercase">Bog'lanish</span>
+            <h2 class="font-serif text-3xl font-bold mt-2 mb-4">Savollaringiz bormi?</h2>
+            <p class="text-gray-400 text-sm max-w-xl mx-auto mb-8">Saytdan o'zingizga yoqqan libosni tanlab buyurtma bering yoki menejerimizga yozing.</p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="https://t.me/azibek017" target="_blank" rel="noopener" class="btn-shimmer bg-gold-500 hover:bg-gold-600 text-gray-950 font-semibold px-7 py-3.5 rounded-xl transition flex items-center space-x-2 text-sm shadow-lg active:scale-95">
+                    <i class="fa-brands fa-telegram text-lg"></i>
+                    <span>Menejer: @azibek017</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-950 text-gray-400 py-8 border-t border-gray-900 text-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-2">
+                <span class="font-serif text-white font-bold tracking-wider">VOLIDAM by Soliya</span>
+            </div>
+            <p>© 2026 Barcha huquqlar himoyalangan.</p>
+        </div>
+    </footer>
+
+    <!-- ADMIN LOGIN MODAL -->
+    <div id="admin-login-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm hidden">
+        <div id="admin-login-box" class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl relative text-center anim-pop">
+            <h3 class="font-serif text-xl font-bold text-gray-900 mb-2">🔒 Admin Panel</h3>
+            <p class="text-xs text-gray-500 mb-4">Kirish uchun maxfiy parolni kiriting:</p>
+            <input type="password" id="admin-pass-input" autocomplete="new-password" onkeydown="if(event.key==='Enter')verifyAdminPass()" placeholder="Parol" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:border-gold-500 text-sm mb-4 text-center">
+            <div class="flex gap-2">
+                <button onclick="closeAdminLogin()" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2.5 rounded-xl text-xs uppercase">Bekor qilish</button>
+                <button onclick="verifyAdminPass()" class="flex-1 bg-gold-500 hover:bg-gold-600 text-gray-950 font-bold py-2.5 rounded-xl text-xs uppercase">Kirish</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN PANEL DASHBOARD -->
+    <div id="admin-dashboard-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm hidden">
+        <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl relative overflow-y-auto max-h-[90vh] custom-scrollbar anim-pop">
+            <div class="flex justify-between items-center mb-6 pb-3 border-b">
+                <h3 class="font-serif text-xl font-bold text-gray-900">🛠 Saytni Boshqarish</h3>
+                <button onclick="closeAdminDashboard()" class="text-gray-400 hover:text-gray-600 text-xl"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="bg-gold-50/50 p-4 rounded-xl border border-gold-100 mb-6">
+                <h4 class="font-bold text-sm text-gray-900 mb-3">➕ Yangi kiyim qo'shish</h4>
+                <form id="add-product-form" onsubmit="addNewProduct(event)" class="space-y-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <input type="text" id="new-p-name" placeholder="Kiyim nomi" required class="px-3 py-2 rounded-lg border text-sm focus:outline-none focus:border-gold-500">
+                        <input type="text" id="new-p-price" placeholder="Narxi (Masalan: 450.000 so'm)" required class="px-3 py-2 rounded-lg border text-sm focus:outline-none focus:border-gold-500">
+                    </div>
+                    <div><input type="text" id="new-p-img" placeholder="Rasm nomi (masalan: 30.jpg)" required class="w-full px-3 py-2 rounded-lg border text-sm focus:outline-none focus:border-gold-500"></div>
+                    <div><textarea id="new-p-desc" placeholder="Tavsif..." rows="2" required class="w-full px-3 py-2 rounded-lg border text-sm focus:outline-none focus:border-gold-500 resize-none"></textarea></div>
+                    <button type="submit" class="btn-shimmer w-full bg-gold-500 hover:bg-gold-600 text-gray-950 font-bold py-2.5 rounded-lg text-xs uppercase">Qo'shish</button>
+                </form>
+            </div>
+            <div>
+                <h4 class="font-bold text-sm text-gray-900 mb-3">📦 Kiyimlar ro'yxati</h4>
+                <div id="admin-products-list" class="space-y-2 max-h-60 overflow-y-auto pr-2 custom-scrollbar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Modal -->
+    <div id="product-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm hidden" onclick="if(event.target===this)closeProductModal()">
+        <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl relative overflow-hidden anim-pop">
+            <button onclick="closeProductModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 z-10 p-2 bg-white/80 rounded-full w-9 h-9 flex items-center justify-center shadow"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <div id="modal-content" class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center"></div>
+        </div>
+    </div>
+
+    <!-- Wishlist Drawer -->
+    <div id="wishlist-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm anim-fade" onclick="toggleWishlistModal()"></div>
+        <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-md bg-white shadow-2xl flex flex-col anim-drawer">
+                <div class="p-6 bg-gray-50 border-b flex items-center justify-between">
+                    <h3 class="font-serif text-xl font-bold text-gray-900 flex items-center gap-2"><i class="fa-solid fa-heart text-gold-600"></i> Sevimlilar</h3>
+                    <button onclick="toggleWishlistModal()" class="text-gray-400 hover:text-gray-600 p-2"><i class="fa-solid fa-xmark text-xl"></i></button>
+                </div>
+                <div id="wishlist-items-container" class="flex-1 overflow-y-auto p-6 space-y-4 custom-scrollbar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Drawer -->
+    <div id="cart-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm anim-fade" onclick="toggleCart()"></div>
+        <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-md bg-white shadow-2xl flex flex-col anim-drawer">
+                <div class="p-6 bg-gray-50 border-b flex items-center justify-between">
+                    <h3 class="font-serif text-xl font-bold text-gray-900 flex items-center gap-2"><i class="fa-solid fa-shopping-bag text-gold-600"></i> Savatcha</h3>
+                    <button onclick="toggleCart()" class="text-gray-400 hover:text-gray-600 p-2"><i class="fa-solid fa-xmark text-xl"></i></button>
+                </div>
+                <div id="cart-items-container" class="flex-1 overflow-y-auto p-6 space-y-4 custom-scrollbar"></div>
+                <div class="p-6 bg-gray-50 border-t">
+                    <div class="flex justify-between items-center mb-4 text-base font-bold">
+                        <span>Jami summa:</span>
+                        <span id="cart-total" class="text-gold-600 font-serif text-xl">0 so'm</span>
+                    </div>
+                    <button onclick="openCheckoutModal()" id="checkout-btn" class="btn-shimmer w-full bg-gray-900 hover:bg-gold-600 text-white font-semibold py-3.5 rounded-xl transition duration-300 uppercase text-xs tracking-wider shadow-lg">Buyurtmani Rasmiylashtirish</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div id="checkout-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm hidden">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative overflow-hidden anim-pop">
+            <div class="flex justify-between items-center mb-4 pb-3 border-b">
+                <h3 class="font-serif text-xl font-bold text-gray-900">Buyurtma berish</h3>
+                <button onclick="closeCheckoutModal()" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <form id="order-form" onsubmit="submitOrder(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-700 mb-1">Ism va Familiyangiz *</label>
+                    <input type="text" id="client-name" required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-gold-500 text-sm" placeholder="Masalan: Malika Rahimova">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-700 mb-1">Telefon raqamingiz *</label>
+                    <input type="tel" id="client-phone" required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-gold-500 text-sm" placeholder="+998 90 123 45 67">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-700 mb-1">Yashash manzilingiz *</label>
+                    <textarea id="client-address" required rows="3" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-gold-500 text-sm resize-none" placeholder="Manzil..."></textarea>
+                </div>
+                <button type="submit" id="submit-order-btn" class="btn-shimmer w-full bg-gold-500 hover:bg-gold-600 text-gray-950 font-bold py-3.5 rounded-xl transition uppercase text-xs tracking-wider shadow-md">Buyurtmani yuborish</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-6 right-6 z-[60] transform translate-y-24 opacity-0 transition-all duration-300 bg-gray-900 text-white px-6 py-3.5 rounded-xl shadow-2xl flex items-center space-x-3 text-sm border border-gold-500/30">
+        <i class="fa-solid fa-circle-check text-gold-500 text-lg"></i>
+        <span id="toast-message">Xabar</span>
+    </div>
+
+    <script>
+        function esc(str) { return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+        function load(key, fallback) { try { const v = JSON.parse(localStorage.getItem(key)); return v || fallback; } catch (e) { return fallback; } }
+        function save(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) {} }
+        function show(id) { document.getElementById(id).classList.remove('hidden'); }
+        function hide(id) { document.getElementById(id).classList.add('hidden'); }
+        function bump(id, cls) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.classList.remove(cls);
+            void el.offsetWidth;
+            el.classList.add(cls);
+        }
+
+        // BARCHA 27 TA MAHSULOT VA TO'G'RILANGAN RASMLAR BAZASI
+        const DEFAULT_PRODUCTS = [
+            { id: 1, name: "Bordo Dvoyka Kostyum", priceNum: 450000, priceStr: "450.000 so'm", description: "Yuqori sifatli materialdan ishlangan zamonaviy bordo rangli ayollar dvoykasi.", images: ["3.jpg"] },
+            { id: 2, name: "Qora Dvoyka Kostyum", priceNum: 450000, priceStr: "450.000 so'm", description: "Jozibali va qulay qora rangdagi eksklyuziv model.", images: ["4.jpg"] },
+            { id: 3, name: "Kulrang Yubka Komplekt", priceNum: 580000, priceStr: "580.000 so'm", description: "Hashamatli uslubdagi sviter va yubka jamlanmasi.", images: ["5.jpg"] },
+            { id: 4, name: "Bej rangli Kostyum-Yubka", priceNum: 550000, priceStr: "550.000 so'm", description: "Kamar bilan bezatilgan nafis bej rangdagi libos.", images: ["6.jpg"] },
+            { id: 5, name: "Bordo Mexli Pancho", priceNum: 420000, priceStr: "420.000 so'm", description: "Issiq va hashamatli mexli yoqaga ega pancho dizayni.", images: ["7.jpg"] },
+            { id: 6, name: "Kulrang Mexli Pancho", priceNum: 420000, priceStr: "420.000 so'm", description: "Sovuq kunlar uchun qulay va jozibali mexli pancho.", images: ["8.jpg"] },
+            { id: 7, name: "Gulli Naqshli Uzun Ko'ylak", priceNum: 480000, priceStr: "480.000 so'm", description: "Naqshinkor gullar bilan bezatilgan nafis ayollar libosi.", images: ["9.jpg"] },
+            { id: 8, name: "Xaki rangli Kardigan", priceNum: 450000, priceStr: "450.000 so'm", description: "Zamonaviy va keng bichimdagi yumshoq kardigan.", images: ["10.jpg"] },
+            { id: 9, name: "Oq Kardigan va Yubka", priceNum: 520000, priceStr: "520.000 so'm", description: "Yengil va nafis uslubdagi oq kardigan hamda yubka to'plami.", images: ["11.jpg"] },
+            { id: 10, name: "Mis rangli Sviter va Shim", priceNum: 460000, priceStr: "460.000 so'm", description: "Qulay sport-klassik uslubdagi zamonaviy to'plam.", images: ["12.jpg"] },
+            { id: 11, name: "Qora Zamonaviy Dvoyka", priceNum: 470000, priceStr: "470.000 so'm", description: "Zal va kundalik yurish uchun mos keluvchi qora rangli zamonaviy kostyum.", images: ["13.jpg"] },
+            { id: 12, name: "Qora Naqshinkor Abaya", priceNum: 620000, priceStr: "620.000 so'm", description: "O'ziga xos naqshlar bilan bezatilgan hashamatli qora abaya.", images: ["14.jpg"] },
+            { id: 13, name: "Premium Klass Abaya", priceNum: 650000, priceStr: "650.000 so'm", description: "Nozik ishlov berilgan yeng qismiga ega premium abaya.", images: ["15.jpg"] },
+            { id: 14, name: "Yashil Bo'yinbog'li Sviter", priceNum: 340000, priceStr: "340.000 so'm", description: "Yumshoq va issiq och yashil rangdagi qulay sviter.", images: ["16.jpg"] },
+            { id: 15, name: "Qahva rangli Sharf va Shapka to'plami", priceNum: 280000, priceStr: "280.000 so'm", description: "Brend logotipli issiq bosh kiyim va sharf to'plami.", images: ["17.jpg"] },
+            { id: 16, name: "Qora Sharf va Shapka to'plami", priceNum: 280000, priceStr: "280.000 so'm", description: "Qora rangdagi qulay va zamonaviy qishki to'plam.", images: ["18.jpg"] },
+            { id: 17, name: "Sut rangli Shapka", priceNum: 150000, priceStr: "150.000 so'm", description: "Italiya dizaynidagi zamonaviy issiq bosh kiyim.", images: ["19.jpg"] },
+            { id: 18, name: "Bej rangli Sharf va Shapka to'plami", priceNum: 280000, priceStr: "280.000 so'm", description: "Qishki mavsum uchun nafis bej aksessuarlar.", images: ["20.jpg"] },
+            { id: 19, name: "Kulrang Gulli Kardigan", priceNum: 450000, priceStr: "450.000 so'm", description: "O'ziga xos gulli naqshlar tushirilgan kulrang kardigan.", images: ["21.jpg"] },
+            { id: 20, name: "Chiziqli Sviter", priceNum: 320000, priceStr: "320.000 so'm", description: "Oq va qora chiziqli zamonaviy dizayndagi sviter.", images: ["22.jpg"] },
+            { id: 21, name: "Qizil Qo'shaloq Tugmali Cape", priceNum: 490000, priceStr: "490.000 so'm", description: "Tilla rang tugmali va o'ziga xos bichimdagi qizil cape libosi.", images: ["23.jpg"] },
+            { id: 22, name: "Qora Mexli Cape", priceNum: 510000, priceStr: "510.000 so'm", description: "Oq sun'iy mex yoqali hashamatli qora cape.", images: ["24.jpg"] },
+            { id: 23, name: "Kulrang Sport Kostyum", priceNum: 460000, priceStr: "460.000 so'm", description: "Qulay va keng bichimli sport stilidagi to'plam.", images: ["25.jpg"] },
+            { id: 24, name: "Qora Keng Sviter", priceNum: 350000, priceStr: "350.000 so'm", description: "Yengil va qulay qora rangdagi kundalik sviter.", images: ["26.jpg"] },
+            { id: 25, name: "Bordo rangli Keng Sviter", priceNum: 350000, priceStr: "350.000 so'm", description: "Issiq va jozibali bordo rangli yumshoq sviter.", images: ["27.jpg"] },
+            { id: 26, name: "Bej rangli Uzun Tunika", priceNum: 420000, priceStr: "420.000 so'm", description: "Oppoq aksessuarlar bilan mukammal mos tushuvchi bej tunika.", images: ["28.jpg"] },
+            { id: 27, name: "To'q kulrang Dvoyka", priceNum: 450000, priceStr: "450.000 so'm", description: "Zanjirli aksessuarlar bilan to'ldirilgan to'q kulrang kostyum.", images: ["29.jpg"] }
+        ];
+
+        let products = load('volidam_products', null) || DEFAULT_PRODUCTS;
+        let cart = load('volidam_cart', []);
+        let wishlist = load('volidam_wishlist', []);
+        let pageReady = false;
+
+        function saveProducts() { save('volidam_products', products); }
+        function saveCart() { save('volidam_cart', cart); }
+        function saveWishlist() { save('volidam_wishlist', wishlist); }
+
+        function renderProducts(list) {
+            const grid = document.getElementById('product-grid');
+            if (!list.length) {
+                grid.innerHTML = `<div class="col-span-full text-center py-12 text-gray-400 text-sm">Hech narsa topilmadi.</div>`;
+                return;
+            }
+            grid.innerHTML = list.map((p, idx) => {
+                const liked = wishlist.includes(p.id);
+                return `
+                <div class="product-card bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl border border-gray-100 flex flex-col group anim-card" style="animation-delay:${(idx % 8) * 50}ms">
+                    <div class="relative h-80 overflow-hidden bg-gray-100 cursor-pointer" onclick="openProductModal(${p.id})">
+                        <img src="${esc(p.images[0])}" alt="${esc(p.name)}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700 ease-out" onerror="this.src='https://placehold.co/400x500/111/d4af37?text=VOLIDAM'">
+                        <button id="heart-btn-${p.id}" onclick="event.stopPropagation(); toggleWishlist(${p.id})" class="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm shadow flex items-center justify-center text-gray-700 hover:text-red-500 transition">
+                            <i class="${liked ? 'fa-solid fa-heart text-red-500' : 'fa-regular fa-heart'}"></i>
+                        </button>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col justify-between">
+                        <div>
+                            <h3 onclick="openProductModal(${p.id})" class="font-serif text-lg font-bold text-gray-900 hover:text-gold-600 cursor-pointer transition line-clamp-1">${esc(p.name)}</h3>
+                            <p class="text-xs text-gray-500 mt-1 line-clamp-2">${esc(p.description)}</p>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between gap-2">
+                            <span class="font-bold text-gold-600 text-sm">${esc(p.priceStr)}</span>
+                            <button onclick="addToCart(${p.id})" class="btn-shimmer bg-gray-900 hover:bg-gold-500 hover:text-gray-950 text-white text-xs font-semibold px-4 py-2.5 rounded-xl transition flex items-center gap-1.5 shadow-sm">
+                                <i class="fa-solid fa-bag-shopping"></i> Savatga
+                            </button>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function onSearchInput(e) {
+            const input = document.getElementById('search-input');
+            if (pageReady && e && e.isTrusted && input.value.trim() === 'adminvolidam') {
+                input.value = '';
+                show('admin-login-modal');
+                setTimeout(() => document.getElementById('admin-pass-input').focus(), 60);
+                applyView();
+                return;
+            }
+            applyView();
+        }
+
+        function applyView() {
+            const query = document.getElementById('search-input').value.trim().toLowerCase();
+            const sort = document.getElementById('sort-select').value;
+            let list = products.filter(p => p.name.toLowerCase().includes(query) || p.description.toLowerCase().includes(query));
+            if (sort === 'price-asc') list.sort((a, b) => a.priceNum - b.priceNum);
+            if (sort === 'price-desc') list.sort((a, b) => b.priceNum - a.priceNum);
+            renderProducts(list);
+        }
+
+        function closeAdminLogin() { hide('admin-login-modal'); }
+        function verifyAdminPass() {
+            const input = document.getElementById('admin-pass-input');
+            if (input.value.trim() === 'volidam777') {
+                closeAdminLogin();
+                input.value = '';
+                show('admin-dashboard-modal');
+                renderAdminProductsList();
+            } else {
+                bump('admin-login-box', 'anim-shake');
+                input.value = '';
+                showToast("Parol noto'g'ri!");
+            }
+        }
+        function closeAdminDashboard() { hide('admin-dashboard-modal'); applyView(); }
+
+        function renderAdminProductsList() {
+            const container = document.getElementById('admin-products-list');
+            container.innerHTML = products.map(p => `
+                <div class="flex items-center justify-between bg-gray-50 p-2.5 rounded-xl border border-gray-100">
+                    <div class="flex items-center space-x-3 min-w-0">
+                        <img src="${esc(p.images[0])}" class="w-10 h-10 object-cover rounded-lg" onerror="this.src='https://placehold.co/50x50/eee/333?text=V'">
+                        <div class="min-w-0">
+                            <h5 class="text-xs font-bold text-gray-900 truncate">${esc(p.name)}</h5>
+                            <p class="text-[10px] text-gold-600">${esc(p.priceStr)}</p>
+                        </div>
+                    </div>
+                    <button onclick="deleteProduct(${p.id})" class="bg-red-50 hover:bg-red-500 hover:text-white text-red-500 px-3 py-2 rounded-lg transition text-xs"><i class="fa-solid fa-trash"></i> O'chirish</button>
+                </div>
+            `).join('');
+        }
+
+        function addNewProduct(e) {
+            e.preventDefault();
+            const name = document.getElementById('new-p-name').value.trim();
+            const priceStr = document.getElementById('new-p-price').value.trim();
+            const imgs = document.getElementById('new-p-img').value.split(',').map(s => s.trim()).filter(Boolean);
+            const description = document.getElementById('new-p-desc').value.trim();
+            const priceNum = parseInt(priceStr.replace(/\D/g, ''), 10) || 0;
+
+            products.unshift({
+                id: Date.now(),
+                name,
+                priceNum,
+                priceStr,
+                description,
+                images: imgs.length ? imgs : ['1.png']
+            });
+            saveProducts();
+            document.getElementById('add-product-form').reset();
+            renderAdminProductsList();
+            applyView();
+            showToast("Yangi kiyim qo'shildi!");
+        }
+
+        function deleteProduct(id) {
+            products = products.filter(p => p.id !== id);
+            cart = cart.filter(c => c.id !== id);
+            wishlist = wishlist.filter(w => w !== id);
+            saveProducts(); saveCart(); saveWishlist();
+            renderAdminProductsList();
+            updateCartUI(); updateWishlistUI(); applyView();
+            showToast("Kiyim o'chirildi!");
+        }
+
+        function openProductModal(id) {
+            const p = products.find(x => x.id === id);
+            if (!p) return;
+            document.getElementById('modal-content').innerHTML = `
+                <div>
+                    <img src="${esc(p.images[0])}" class="w-full h-80 object-cover rounded-xl bg-gray-100" onerror="this.src='https://placehold.co/400x500/111/d4af37?text=VOLIDAM'">
+                </div>
+                <div>
+                    <span class="text-gold-600 text-xs font-bold uppercase tracking-widest">VOLIDAM by Soliya</span>
+                    <h3 class="font-serif text-2xl font-bold text-gray-900 mt-1">${esc(p.name)}</h3>
+                    <p class="text-xl font-bold text-gold-600 mt-2">${esc(p.priceStr)}</p>
+                    <p class="text-gray-600 text-sm mt-4 leading-relaxed">${esc(p.description)}</p>
+                    <div class="mt-6 flex gap-3">
+                        <button onclick="addToCart(${p.id}); closeProductModal();" class="btn-shimmer flex-1 bg-gold-500 hover:bg-gold-600 text-gray-950 font-bold py-3 rounded-xl text-xs uppercase tracking-wider shadow">Savatchaga qo'shish</button>
+                    </div>
+                </div>
+            `;
+            show('product-modal');
+        }
+        function closeProductModal() { hide('product-modal'); }
+
+        function toggleWishlist(id) {
+            const idx = wishlist.indexOf(id);
+            if (idx === -1) { wishlist.push(id); showToast("Sevimlilarga qo'shildi!"); }
+            else { wishlist.splice(idx, 1); showToast("Sevimlilardan olib tashlandi!"); }
+            saveWishlist(); updateWishlistUI(); applyView();
+            bump('heart-btn-' + id, 'heart-pop');
+            bump('wishlist-badge', 'badge-bump');
+        }
+        function toggleWishlistModal() {
+            const m = document.getElementById('wishlist-modal');
+            m.classList.contains('hidden') ? (updateWishlistUI(), show('wishlist-modal')) : hide('wishlist-modal');
+        }
+        function updateWishlistUI() {
+            document.getElementById('wishlist-badge').textContent = wishlist.length;
+            const c = document.getElementById('wishlist-items-container');
+            const items = products.filter(p => wishlist.includes(p.id));
+            if (!items.length) { c.innerHTML = `<p class="text-center text-gray-400 text-sm py-10">Sevimlilar ro'yxati bo'sh.</p>`; return; }
+            c.innerHTML = items.map(p => `
+                <div class="flex items-center justify-between gap-3 bg-gray-50 p-3 rounded-xl border border-gray-100">
+                    <img src="${esc(p.images[0])}" class="w-16 h-16 object-cover rounded-lg" onerror="this.src='https://placehold.co/100x100/111/d4af37?text=V'">
+                    <div class="flex-1 min-w-0">
+                        <h4 class="font-bold text-sm text-gray-900 truncate">${esc(p.name)}</h4>
+                        <p class="text-xs text-gold-600 font-semibold">${esc(p.priceStr)}</p>
+                    </div>
+                    <button onclick="toggleWishlist(${p.id})" class="text-gray-400 hover:text-red-500 p-2"><i class="fa-solid fa-trash"></i></button>
+                </div>`).join('');
+        }
+
+        function addToCart(id) {
+            const item = cart.find(c => c.id === id);
+            if (item) item.qty += 1; else cart.push({ id, qty: 1 });
+            saveCart(); updateCartUI();
+            bump('cart-badge', 'badge-bump');
+            showToast("Savatchaga qo'shildi!");
+        }
+        function changeQty(id, delta) {
+            const idx = cart.findIndex(c => c.id === id);
+            if (idx === -1) return;
+            cart[idx].qty += delta;
+            if (cart[idx].qty <= 0) cart.splice(idx, 1);
+            saveCart(); updateCartUI();
+        }
+        function toggleCart() {
+            const m = document.getElementById('cart-modal');
+            m.classList.contains('hidden') ? (updateCartUI(), show('cart-modal')) : hide('cart-modal');
+        }
+        function updateCartUI() {
+            const totalQty = cart.reduce((s, c) => s + c.qty, 0);
+            document.getElementById('cart-badge').textContent = totalQty;
+            const c = document.getElementById('cart-items-container');
+            let totalSum = 0;
+            if (!cart.length) {
+                c.innerHTML = `<p class="text-center text-gray-400 text-sm py-10">Savatchangiz bo'sh.</p>`;
+                document.getElementById('cart-total').textContent = "0 so'm";
+                return;
+            }
+            c.innerHTML = cart.map(item => {
+                const p = products.find(x => x.id === item.id);
+                if (!p) return '';
+                totalSum += p.priceNum * item.qty;
+                return `
+                <div class="flex items-center gap-3 bg-gray-50 p-3 rounded-xl border border-gray-100">
+                    <img src="${esc(p.images[0])}" class="w-16 h-16 object-cover rounded-lg" onerror="this.src='https://placehold.co/100x100/111/d4af37?text=V'">
+                    <div class="flex-1 min-w-0">
+                        <h4 class="font-bold text-sm text-gray-900 truncate">${esc(p.name)}</h4>
+                        <p class="text-xs text-gold-600 font-semibold">${esc(p.priceStr)}</p>
+                        <div class="flex items-center gap-2 mt-2">
+                            <button onclick="changeQty(${p.id}, -1)" class="w-6 h-6 rounded bg-white border text-xs font-bold">-</button>
+                            <span class="text-xs font-bold w-5 text-center">${item.qty}</span>
+                            <button onclick="changeQty(${p.id}, 1)" class="w-6 h-6 rounded bg-white border text-xs font-bold">+</button>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+            document.getElementById('cart-total').textContent = totalSum.toLocaleString('uz-UZ') + " so'm";
+        }
+
+        function openCheckoutModal() { hide('cart-modal'); show('checkout-modal'); }
+        function closeCheckoutModal() { hide('checkout-modal'); }
+
+        async function submitOrder(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submit-order-btn');
+            btn.disabled = true; btn.textContent = "Yuborilmoqda...";
+            
+            const orderData = {
+                name: document.getElementById('client-name').value.trim(),
+                phone: document.getElementById('client-phone').value.trim(),
+                address: document.getElementById('client-address').value.trim(),
+                items: cart.map(c => {
+                    const p = products.find(x => x.id === c.id);
+                    return p ? `${p.name} (${c.qty} dona)` : '';
+                }).filter(Boolean),
+                total: document.getElementById('cart-total').textContent
+            };
+
+            try {
+                await fetch('/api/order', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(orderData)
+                });
+            } catch (err) {}
+
+            cart = []; saveCart(); updateCartUI();
+            document.getElementById('order-form').reset();
+            closeCheckoutModal();
+            btn.disabled = false; btn.textContent = "Buyurtmani yuborish";
+            showToast("Buyurtmangiz qabul qilindi!");
+        }
+
+        function toggleMobileMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
+        let toastTimer;
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            document.getElementById('toast-message').textContent = msg;
+            t.classList.remove('translate-y-24', 'opacity-0');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => t.classList.add('translate-y-24', 'opacity-0'), 3000);
+        }
+
+        // Scroll animatsiyalarini (reveal) ishga tushirish
+        function initReveal() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        }
+
+        window.onload = function() {
+            // Eski xato saqlanib qolgan keshni tozalash (agar kerak bo'lsa)
+            if (!localStorage.getItem('volidam_v2_fixed')) {
+                localStorage.removeItem('volidam_products');
+                localStorage.setItem('volidam_v2_fixed', 'true');
+                products = DEFAULT_PRODUCTS;
+            }
+            applyView();
+            updateCartUI();
+            updateWishlistUI();
+            initReveal();
+            setTimeout(() => { pageReady = true; }, 600);
+        };
+    </script>
+</body>
+</html>
