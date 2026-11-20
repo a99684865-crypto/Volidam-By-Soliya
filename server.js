@@ -1,164 +1,195 @@
 const express = require('express');
-const { Telegraf, Markup } = require('telegraf');
-const path = require('path');
 const mongoose = require('mongoose');
+const path = require('path');
+const { Telegraf, Markup } = require('telegraf');
 
-const BOT_TOKEN = process.env.BOT_TOKEN || '9076791095:AAElEEUK4ChCRsx-kpFpniA-3xjJqBS5JlU';
-const SECRET_PASS = process.env.SECRET_PASS || process.env.VOLIDAM00 || 'volidam777';
-const MONGODB_URI = process.env.MONGODB_URI;
-
-const PORT = process.env.PORT || 3000;
 const app = express();
+const PORT = process.env.PORT || 3000;
 
-if (!MONGODB_URI) {
-    throw new Error('MONGODB_URI topilmadi!');
-}
+const MONGODB_URI =
+  process.env.MONGODB_URI ||
+  'mongodb+srv://VOLIDAMAKA:Azizjon@cluster0.haun4zb.mongodb.net/volidam?retryWrites=true&w=majority';
 
-app.use(express.json());
+const BOT_TOKEN =
+  process.env.BOT_TOKEN || '9076791095:AAElEEUK4ChCRsx-kpFpniA-3xjJqBS5JlU';
+
+const SECRET_PASS = process.env.SECRET_PASS || 'volidam777';
+
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Statik fayllar
 app.use(express.static(__dirname));
+app.use(express.static(path.join(__dirname, 'public')));
 
-const Order = mongoose.model('Order', new mongoose.Schema({
-    message: { type: String, required: true },
-    timestamp: { type: Date, default: Date.now }
-}));
+// MongoDB ulanishi
+mongoose
+  .connect(MONGODB_URI)
+  .then(() => {
+    console.log('✅ MongoDB ulandi');
+  })
+  .catch((err) => {
+    console.error('❌ MongoDB ulanish xatosi:', err.message);
+  });
 
+// Mahsulot sxemasi
+const productSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    category: { type: String, default: 'Umumiy' },
+    price: { type: Number, required: true },
+    oldPrice: { type: Number, default: 0 },
+    image: { type: String, default: '' },
+    description: { type: String, default: '' },
+    inStock: { type: Boolean, default: true }
+  },
+  { timestamps: true }
+);
+
+const Product = mongoose.models.Product || mongoose.model('Product', productSchema);
+
+// Buyurtma sxemasi
+const orderSchema = new mongoose.Schema(
+  {
+    customerName: { type: String, required: true },
+    phone: { type: String, required: true },
+    address: { type: String, default: '' },
+    paymentMethod: { type: String, default: 'Naqd / Kelishilgan holda' },
+    items: [
+      {
+        productId: String,
+        name: String,
+        price: Number,
+        quantity: { type: Number, default: 1 }
+      }
+    ],
+    totalAmount: { type: Number, required: true },
+    status: { type: String, default: 'Yangi' }
+  },
+  { timestamps: true }
+);
+
+const Order = mongoose.models.Order || mongoose.model('Order', orderSchema);
+
+// API: Barcha mahsulotlar
+app.get('/api/products', async (req, res) => {
+  try {
+    const products = await Product.find().sort({ createdAt: -1 });
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ error: 'Mahsulotlarni olishda xatolik' });
+  }
+});
+
+// API: Yangi mahsulot qo'shish
+app.post('/api/products', async (req, res) => {
+  try {
+    const product = await Product.create(req.body);
+    res.status(201).json(product);
+  } catch (err) {
+    res.status(400).json({ error: 'Mahsulot qo‘shishda xatolik', details: err.message });
+  }
+});
+
+// API: Buyurtma qabul qilish va Telegram adminga yuborish
+app.post('/api/orders', async (req, res) => {
+  try {
+    const order = await Order.create(req.body);
+
+    if (bot && adminChatId) {
+      const itemsText = (order.items || [])
+        .map((item, idx) => `${idx + 1}. ${item.name} — ${item.quantity} dona (${item.price} so'm)`)
+        .join('\n');
+
+      const message =
+        `🛍 <b>Yangi buyurtma!</b>\n\n` +
+        `👤 <b>Mijoz:</b> ${order.customerName}\n` +
+        `📞 <b>Telefon:</b> ${order.phone}\n` +
+        `📍 <b>Manzil:</b> ${order.address || 'Ko‘rsatilmagan'}\n` +
+        `💳 <b>To‘lov:</b> ${order.paymentMethod}\n` +
+        `📦 <b>Mahsulotlar:</b>\n${itemsText || 'Ko‘rsatilmagan'}\n` +
+        `💰 <b>Jami:</b> ${order.totalAmount} so'm`;
+
+      bot.telegram.sendMessage(adminChatId, message, { parse_mode: 'HTML' }).catch(() => {});
+    }
+
+    res.status(201).json(order);
+  } catch (err) {
+    res.status(400).json({ error: 'Buyurtmani saqlashda xatolik', details: err.message });
+  }
+});
+
+// Bosh sahifa
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-const admins = new Set();
-const bot = new Telegraf(BOT_TOKEN);
+// Telegram Bot sozlamalari
+let bot = null;
+let adminChatId = null;
 
-const adminKeyboard = Markup.keyboard([
-    ['📦 Oxirgi zakazlar', '🗑 Tozalash'],
-    ['🚪 Chiqish']
-]).resize();
+if (BOT_TOKEN) {
+  bot = new Telegraf(BOT_TOKEN);
 
-bot.start((ctx) => {
-    if (admins.has(ctx.chat.id)) {
-        return ctx.reply('✅ Siz admin sifatida ulangansiz.', adminKeyboard);
+  bot.start((ctx) => {
+    ctx.reply(
+      `Assalomu alaykum! <b>VOLIDAM by Soliya</b> botiga xush kelibsiz.\n\n` +
+        `Admin boshqaruvini faollashtirish uchun maxfiy parolni yuboring:`,
+      { parse_mode: 'HTML' }
+    );
+  });
+
+  bot.command('admin', (ctx) => {
+    ctx.reply('Admin panelga kirish uchun maxfiy parolni yuboring:');
+  });
+
+  bot.on('text', async (ctx) => {
+    const text = ctx.message.text.trim();
+
+    if (text === SECRET_PASS) {
+      adminChatId = ctx.chat.id;
+      await ctx.reply(
+        `✅ Admin rejimi yoqildi! Yangi buyurtmalar shu chatga keladi.`,
+        Markup.keyboard([['📦 Buyurtmalar', '🛍 Mahsulotlar soni']]).resize()
+      );
+      return;
     }
-    return ctx.reply('🔒 Yopiq tizim! Maxfiy parolni yuboring:');
-});
 
-bot.on('text', async (ctx, next) => {
-    if (ctx.message.text === SECRET_PASS) {
-        admins.add(ctx.chat.id);
-        try {
-            await ctx.deleteMessage();
-        } catch (_) {}
-        return ctx.reply('✅ Muvaffaqiyatli ulandingiz!', adminKeyboard);
+    if (text === '📦 Buyurtmalar') {
+      if (ctx.chat.id !== adminChatId) {
+        return ctx.reply('Avval maxfiy parolni yuborib admin sifatida kiring.');
+      }
+      const orders = await Order.find().sort({ createdAt: -1 }).limit(5);
+      if (!orders.length) {
+        return ctx.reply('Hozircha buyurtmalar yo‘q.');
+      }
+      const list = orders
+        .map(
+          (o, i) =>
+            `${i + 1}. <b>${o.customerName}</b> (${o.phone}) — ${o.totalAmount} so'm [${o.status}]`
+        )
+        .join('\n');
+      return ctx.reply(`📋 <b>Oxirgi 5 ta buyurtma:</b>\n\n${list}`, { parse_mode: 'HTML' });
     }
-    return next();
-});
 
-bot.hears('📦 Oxirgi zakazlar', async (ctx) => {
-    if (!admins.has(ctx.chat.id)) {
-        return ctx.reply("⛔ Ruxsat yo'q!");
+    if (text === '🛍 Mahsulotlar soni') {
+      const count = await Product.countDocuments();
+      return ctx.reply(`Bazadagi mahsulotlar soni: <b>${count}</b> ta`, { parse_mode: 'HTML' });
     }
+  });
 
-    try {
-        const orders = await Order.find().sort({ timestamp: -1 }).limit(10);
-        if (!orders.length) {
-            return ctx.reply("📭 Hozircha zakazlar yo'q.");
-        }
-
-        const message = orders
-            .map(order => order.message)
-            .reverse()
-            .join('\n\n-------------------\n\n');
-
-        return ctx.reply(`📋 Oxirgi zakazlar:\n\n${message}`);
-    } catch (error) {
-        console.error(error);
-        return ctx.reply('❌ Xatolik yuz berdi.');
-    }
-});
-
-bot.hears('🗑 Tozalash', async (ctx) => {
-    if (!admins.has(ctx.chat.id)) return;
-
-    try {
-        await Order.deleteMany({});
-        return ctx.reply('🗑 Zakazlar tarixi tozalandi!');
-    } catch (error) {
-        console.error(error);
-        return ctx.reply('❌ Xatolik!');
-    }
-});
-
-bot.hears('🚪 Chiqish', (ctx) => {
-    admins.delete(ctx.chat.id);
-    return ctx.reply('🔒 Admin rejimidan chiqdingiz.', Markup.removeKeyboard());
-});
-
-app.post('/api/order', async (req, res) => {
-    try {
-        const { name, phone, address, total, cart, items } = req.body || {};
-        const orderItems = Array.isArray(cart) ? cart : Array.isArray(items) ? items : [];
-
-        if (!name || !phone || !address || orderItems.length === 0) {
-            return res.status(400).json({
-                success: false,
-                error: "Ma'lumotlar to'liq emas!"
-            });
-        }
-
-        let msg = '🚨 YANGI BUYURTMA TUSHDI!\n\n';
-        msg += `👤 Mijoz: ${name}\n`;
-        msg += `📞 Telefon: ${phone}\n`;
-        msg += `📍 Manzil: ${address}\n\n`;
-        msg += '🛍 Kiyimlar:\n';
-
-        orderItems.forEach((item, index) => {
-            if (typeof item === 'string') {
-                msg += `${index + 1}. ${item}\n`;
-            } else {
-                msg += `${index + 1}. ${item.title || item.name || 'Mahsulot'} — ${item.price ?? ''} (${item.quantity ?? item.qty ?? 1} ta)\n`;
-            }
-        });
-
-        msg += `\n💰 Jami: ${total ?? ''}`;
-
-        await Order.create({ message: msg });
-
-        for (const adminId of admins) {
-            try {
-                await bot.telegram.sendMessage(adminId, msg);
-            } catch (error) {
-                console.error(error);
-            }
-        }
-
-        return res.json({
-            success: true,
-            message: 'Zakaz qabul qilindi!'
-        });
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({
-            success: false,
-            error: 'Server xatosi'
-        });
-    }
-});
-
-async function startServer() {
-    await mongoose.connect(MONGODB_URI);
-    console.log('✅ MongoDB connected');
-
-    await bot.launch();
-    console.log('🤖 Telegram bot ishga tushdi!');
-
-    app.listen(PORT, () => {
-        console.log(`🌐 Server: http://localhost:${PORT}`);
+  bot
+    .launch()
+    .then(() => {
+      console.log('🤖 Telegram bot ishga tushdi');
+    })
+    .catch((err) => {
+      console.error('⚠️ Telegram bot ishga tushmadi:', err.message);
     });
+} else {
+  console.log('⚠️ BOT_TOKEN kiritilmagan, bot o‘tkazib yuborildi');
 }
 
-startServer().catch(error => {
-    console.error('Server xatosi:', error);
-    process.exit(1);
+app.listen(PORT, () => {
+  console.log(`🚀 Server ${PORT}-portda ishga tushdi`);
 });
-
-process.once('SIGINT', () => bot.stop('SIGINT'));
-process.once('SIGTERM', () => bot.stop('SIGTERM'));
