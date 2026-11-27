@@ -18,16 +18,14 @@ const SECRET_PASS = (process.env.SECRET_PASS || 'volidam777').trim();
 app.use(express.json({ limit: '20mb' }));
 app.use(express.urlencoded({ extended: true, limit: '20mb' }));
 
-// Statik fayllar (rasmlar, css va h.k.)
+// Statik fayllar
 app.use(express.static(__dirname));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// HTML xavfsizligi (Telegram xabarlari buzilmasligi uchun)
 function escHtml(str) {
   return String(str || '').replace(/[&<>]/g, (c) => ({ '&': '&', '<': '<', '>': '>' }[c]));
 }
 
-// Boshlang'ich 27 ta mahsulot (MongoDB bo'sh bo'lsa, 1 marta avtomatik yuklanadi)
 const DEFAULT_PRODUCTS = [
   { name: "Bordo Dvoyka Kostyum", priceNum: 450000, priceStr: "450.000 so'm", description: "Yuqori sifatli materialdan ishlangan zamonaviy bordo rangli ayollar dvoykasi.", images: ["3.jpg"] },
   { name: "Qora Dvoyka Kostyum", priceNum: 450000, priceStr: "450.000 so'm", description: "Jozibali va qulay qora rangdagi eksklyuziv model.", images: ["4.jpg"] },
@@ -105,24 +103,29 @@ const orderSchema = new mongoose.Schema(
 const Order = mongoose.models.Order || mongoose.model('Order', orderSchema);
 
 let cachedAdminIds = new Set();
+let lastDbError = null;
+let fallbackProducts = DEFAULT_PRODUCTS.map((p, idx) => ({ _id: 'default-' + (idx + 1), ...p }));
+let fallbackSiteImages = { hero: '3.jpg', about1: '3.jpg', about2: '4.jpg' };
+
+function isDbConnected() {
+  return mongoose.connection.readyState === 1;
+}
 
 async function getSiteConfig() {
   let cfg = await SiteConfig.findOne({ key: 'main' });
-  if (!cfg) {
-    cfg = await SiteConfig.create({ key: 'main' });
-  }
+  if (!cfg) cfg = await SiteConfig.create({ key: 'main' });
   return cfg;
 }
 
-// MongoDB ulanishi
+// MongoDB ulanishi (5 soniya timeout bilan, server qotib qolmasligi uchun)
 mongoose
-  .connect(MONGODB_URI)
+  .connect(MONGODB_URI, { serverSelectionTimeoutMS: 5000 })
   .then(async () => {
+    lastDbError = null;
     console.log('✅ MongoDB ulandi');
     const cfg = await getSiteConfig();
     (cfg.adminChatIds || []).forEach((id) => cachedAdminIds.add(id));
 
-    // Agar baza bo'sh va hali yuklanmagan bo'lsa, 27 ta mahsulotni 1 marta qo'shish
     const count = await Product.countDocuments();
     if (count === 0 && !cfg.seeded) {
       await Product.insertMany(DEFAULT_PRODUCTS);
@@ -132,10 +135,10 @@ mongoose
     }
   })
   .catch((err) => {
+    lastDbError = err.message;
     console.error('❌ MongoDB ulanish xatosi:', err.message);
   });
 
-// Admin parol tekshiruvi middleware
 function requireAdmin(req, res, next) {
   const pass = String(req.headers['x-admin-pass'] || '').trim();
   if (pass !== SECRET_PASS) {
@@ -146,65 +149,83 @@ function requireAdmin(req, res, next) {
 
 // ================= API YO'LLARI =================
 
-// Admin parolini tekshirish
+// Holatni tekshirish (https://volidam-by-soliya-2.onrender.com/api/health)
+app.get('/api/health', (req, res) => {
+  res.json({
+    ok: true,
+    dbConnected: isDbConnected(),
+    dbError: lastDbError,
+    botStarted: Boolean(bot),
+    adminsCount: cachedAdminIds.size
+  });
+});
+
 app.post('/api/admin/verify', (req, res) => {
   const pass = String(req.body?.password || '').trim();
-  if (pass === SECRET_PASS) {
-    return res.json({ ok: true });
-  }
+  if (pass === SECRET_PASS) return res.json({ ok: true });
   res.status(401).json({ ok: false, error: "Parol noto'g'ri!" });
 });
 
-// Barcha mahsulotlarni olish (hamma mijozlar uchun)
 app.get('/api/products', async (req, res) => {
+  if (!isDbConnected()) {
+    return res.json(fallbackProducts);
+  }
   try {
     const products = await Product.find().sort({ createdAt: -1 });
+    if (!products.length) return res.json(fallbackProducts);
     res.json(products);
   } catch (err) {
-    res.status(500).json({ error: 'Mahsulotlarni olishda xatolik' });
+    res.json(fallbackProducts);
   }
 });
 
-// Yangi mahsulot qo'shish (Admin)
 app.post('/api/products', requireAdmin, async (req, res) => {
-  try {
-    const { name, priceStr, priceNum, description, images } = req.body;
-    if (!name || !priceStr) {
-      return res.status(400).json({ error: 'Kiyim nomi va narxi kiritilishi shart' });
-    }
-    const cleanPriceNum =
-      typeof priceNum === 'number' && priceNum > 0
-        ? priceNum
-        : parseInt(String(priceStr).replace(/\D/g, ''), 10) || 0;
+  const { name, priceStr, priceNum, description, images } = req.body;
+  if (!name || !priceStr) {
+    return res.status(400).json({ error: 'Kiyim nomi va narxi kiritilishi shart' });
+  }
+  const cleanPriceNum =
+    typeof priceNum === 'number' && priceNum > 0
+      ? priceNum
+      : parseInt(String(priceStr).replace(/\D/g, ''), 10) || 0;
 
-    const product = await Product.create({
-      name: String(name).trim(),
-      priceStr: String(priceStr).trim(),
-      priceNum: cleanPriceNum,
-      description: String(description || '').trim(),
-      images: Array.isArray(images) && images.length ? images : ['3.jpg']
+  const payload = {
+    name: String(name).trim(),
+    priceStr: String(priceStr).trim(),
+    priceNum: cleanPriceNum,
+    description: String(description || '').trim(),
+    images: Array.isArray(images) && images.length ? images : ['3.jpg']
+  };
+
+  if (!isDbConnected()) {
+    return res.status(503).json({
+      error: "MongoDB ulanmagan! Atlas -> Network Access -> 0.0.0.0/0 ni tekshiring."
     });
+  }
+
+  try {
+    const product = await Product.create(payload);
     res.status(201).json(product);
   } catch (err) {
     res.status(400).json({ error: "Mahsulot qo'shishda xatolik", details: err.message });
   }
 });
 
-// Mahsulotni o'chirish (Admin)
 app.delete('/api/products/:id', requireAdmin, async (req, res) => {
+  if (!isDbConnected()) {
+    return res.status(503).json({ error: 'MongoDB ulanmagan!' });
+  }
   try {
     const deleted = await Product.findByIdAndDelete(req.params.id);
-    if (!deleted) {
-      return res.status(404).json({ error: 'Mahsulot topilmadi' });
-    }
+    if (!deleted) return res.status(404).json({ error: 'Mahsulot topilmadi' });
     res.json({ ok: true });
   } catch (err) {
     res.status(400).json({ error: "Mahsulotni o'chirishda xatolik" });
   }
 });
 
-// Sayt rasmlarini olish (Bosh banner, Biz haqimizda 1 va 2)
 app.get('/api/site-images', async (req, res) => {
+  if (!isDbConnected()) return res.json(fallbackSiteImages);
   try {
     const cfg = await getSiteConfig();
     res.json({
@@ -213,12 +234,14 @@ app.get('/api/site-images', async (req, res) => {
       about2: cfg.about2 || '4.jpg'
     });
   } catch (err) {
-    res.json({ hero: '3.jpg', about1: '3.jpg', about2: '4.jpg' });
+    res.json(fallbackSiteImages);
   }
 });
 
-// Sayt rasmlarini yangilash (Admin -> MongoDB -> Hamma mijozlarga ko'rinadi)
 app.put('/api/site-images', requireAdmin, async (req, res) => {
+  if (!isDbConnected()) {
+    return res.status(503).json({ error: 'MongoDB ulanmagan!' });
+  }
   try {
     const { hero, about1, about2 } = req.body;
     const cfg = await getSiteConfig();
@@ -232,7 +255,6 @@ app.put('/api/site-images', requireAdmin, async (req, res) => {
   }
 });
 
-// Buyurtma qabul qilish (ham /api/orders, ham /api/order ishlaydi)
 async function handleCreateOrder(req, res) {
   try {
     const customerName = String(req.body.customerName || req.body.name || '').trim();
@@ -256,20 +278,18 @@ async function handleCreateOrder(req, res) {
       return res.status(400).json({ error: 'Ism va telefon raqami majburiy' });
     }
 
-    const order = await Order.create({
-      customerName,
-      phone,
-      address,
-      items,
-      totalText,
-      totalAmount
-    });
+    let order = { customerName, phone, address, items, totalText, totalAmount };
+    if (isDbConnected()) {
+      order = await Order.create(order);
+    }
 
-    // MongoDB dagi barcha adminlarga Telegram xabari yuborish
     if (bot) {
       try {
-        const cfg = await getSiteConfig();
-        const chatIds = new Set([...cachedAdminIds, ...(cfg.adminChatIds || [])]);
+        const chatIds = new Set([...cachedAdminIds]);
+        if (isDbConnected()) {
+          const cfg = await getSiteConfig();
+          (cfg.adminChatIds || []).forEach((id) => chatIds.add(id));
+        }
 
         const itemsText = items
           .map(
@@ -307,7 +327,7 @@ async function handleCreateOrder(req, res) {
 app.post('/api/orders', handleCreateOrder);
 app.post('/api/order', handleCreateOrder);
 
-// ================= GOOGLE SEO: ROBOTS.TXT VA SITEMAP.XML =================
+// ================= GOOGLE SEO =================
 app.get('/robots.txt', (req, res) => {
   const baseUrl = `https://${req.get('host')}`;
   res.type('text/plain').send(`User-agent: *\nAllow: /\n\nSitemap: ${baseUrl}/sitemap.xml\n`);
@@ -329,7 +349,6 @@ app.get('/sitemap.xml', (req, res) => {
   );
 });
 
-// Bosh sahifa
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
@@ -345,15 +364,11 @@ if (BOT_TOKEN) {
   });
 
   bot.start(async (ctx) => {
-    try {
-      await ctx.reply(
-        `Assalomu alaykum! <b>VOLIDAM by Soliya</b> botiga xush kelibsiz.\n\n` +
-          `Admin boshqaruvini faollashtirish uchun maxfiy parolni yuboring:`,
-        { parse_mode: 'HTML' }
-      );
-    } catch (e) {
-      console.error('Start xatosi:', e.message);
-    }
+    await ctx.reply(
+      `Assalomu alaykum! <b>VOLIDAM by Soliya</b> botiga xush kelibsiz.\n\n` +
+        `Admin boshqaruvini faollashtirish uchun maxfiy parolni yuboring:`,
+      { parse_mode: 'HTML' }
+    );
   });
 
   bot.command('admin', async (ctx) => {
@@ -365,17 +380,14 @@ if (BOT_TOKEN) {
       const text = (ctx.message.text || '').trim();
       const chatId = ctx.chat.id;
 
-      // Parol tekshiruvi (katta-kichik harf farqsiz)
       if (text.toLowerCase() === SECRET_PASS.toLowerCase()) {
         cachedAdminIds.add(chatId);
-        try {
+        if (isDbConnected()) {
           await SiteConfig.findOneAndUpdate(
             { key: 'main' },
             { $addToSet: { adminChatIds: chatId } },
             { upsert: true }
-          );
-        } catch (dbErr) {
-          console.error('Admin ID saqlash xatosi:', dbErr.message);
+          ).catch(() => {});
         }
 
         await ctx.reply(
@@ -388,22 +400,18 @@ if (BOT_TOKEN) {
         return;
       }
 
-      // Admin ekanligini tekshirish
       let isAdmin = cachedAdminIds.has(chatId);
-      if (!isAdmin) {
+      if (!isAdmin && isDbConnected()) {
         const cfg = await getSiteConfig();
         isAdmin = (cfg.adminChatIds || []).includes(chatId);
         if (isAdmin) cachedAdminIds.add(chatId);
       }
 
       if (text === '📦 Buyurtmalar') {
-        if (!isAdmin) {
-          return ctx.reply('Avval maxfiy parolni yuborib admin sifatida kiring.');
-        }
+        if (!isAdmin) return ctx.reply('Avval maxfiy parolni yuborib admin sifatida kiring.');
+        if (!isDbConnected()) return ctx.reply('⚠️ MongoDB bazasiga ulanmagan.');
         const orders = await Order.find().sort({ createdAt: -1 }).limit(5);
-        if (!orders.length) {
-          return ctx.reply('Hozircha buyurtmalar yo‘q.');
-        }
+        if (!orders.length) return ctx.reply('Hozircha buyurtmalar yo‘q.');
         const list = orders
           .map(
             (o, i) =>
@@ -416,14 +424,11 @@ if (BOT_TOKEN) {
       }
 
       if (text === '🛍 Mahsulotlar soni') {
-        if (!isAdmin) {
-          return ctx.reply('Avval maxfiy parolni yuborib admin sifatida kiring.');
-        }
-        const count = await Product.countDocuments();
+        if (!isAdmin) return ctx.reply('Avval maxfiy parolni yuborib admin sifatida kiring.');
+        const count = isDbConnected() ? await Product.countDocuments() : fallbackProducts.length;
         return ctx.reply(`Bazadagi mahsulotlar soni: <b>${count}</b> ta`, { parse_mode: 'HTML' });
       }
 
-      // Noto'g'ri parol yoki boshqa matn yozilganda jim qolmaslik uchun
       if (!isAdmin) {
         await ctx.reply("❌ Parol noto'g'ri. Admin kirishi uchun to'g'ri maxfiy parolni yuboring.");
       }
@@ -433,16 +438,11 @@ if (BOT_TOKEN) {
     }
   });
 
-  // Eski webhook bo'lsa o'chirib, toza polling bilan yoqish
   bot.telegram
     .deleteWebhook({ drop_pending_updates: true })
     .then(() => bot.launch({ dropPendingUpdates: true }))
-    .then(() => {
-      console.log('🤖 Telegram bot ishga tushdi');
-    })
-    .catch((err) => {
-      console.error('⚠️ Telegram bot ishga tushmadi:', err.message);
-    });
+    .then(() => console.log('🤖 Telegram bot ishga tushdi'))
+    .catch((err) => console.error('⚠️ Telegram bot ishga tushmadi:', err.message));
 
   process.once('SIGINT', () => bot.stop('SIGINT'));
   process.once('SIGTERM', () => bot.stop('SIGTERM'));
