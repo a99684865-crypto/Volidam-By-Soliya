@@ -11,22 +11,25 @@
     <meta name="author" content="VOLIDAM by Soliya">
     <meta name="robots" content="index, follow, max-image-preview:large">
     <meta name="theme-color" content="#111827">
+    <link rel="canonical" href="https://volidam-by-soliya-2.onrender.com/">
 
-    <!-- Favicon (Google qidiruv natijalarida ko'rinadigan logo) -->
+    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23111827' stroke='%23d4af37' stroke-width='4'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='34' font-weight='bold' fill='%23d4af37' text-anchor='middle'%3EV%3C/text%3E%3C/svg%3E">
 
-    <!-- Open Graph (Telegram, Instagram va ijtimoiy tarmoqlar uchun) -->
+    <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:locale" content="uz_UZ">
     <meta property="og:site_name" content="VOLIDAM by Soliya">
     <meta property="og:title" content="VOLIDAM by Soliya — Premium Ayollar Kiyimlari Butigi">
-    <meta property="og:description" content="Hashamat va nafosat uyg'unligi. Toshkentdagi ayollar liboslari katalogi: dvoyka, abaya, kardigan va kostyumlar. O'zbekiston bo'ylab yetkazib berish.">
-    <meta property="og:image" content="3.jpg">
+    <meta property="og:description" content="Hashamat va nafosat uyg'unligi. Toshkentdagi ayollar liboslari katalogi: dvoyka, abaya, kardigan va kostyumlar.">
+    <meta property="og:url" content="https://volidam-by-soliya-2.onrender.com/">
+    <meta property="og:image" content="https://volidam-by-soliya-2.onrender.com/3.jpg">
 
     <!-- Twitter / X Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="VOLIDAM by Soliya — Premium Boutique">
     <meta name="twitter:description" content="Toshkentdagi premium ayollar kiyimlari do'koni. O'zbekiston bo'ylab tez yetkazib berish.">
+    <meta name="twitter:image" content="https://volidam-by-soliya-2.onrender.com/3.jpg">
 
     <!-- Google uchun Structured Data (JSON-LD) -->
     <script type="application/ld+json">
@@ -34,6 +37,8 @@
       "@context": "https://schema.org",
       "@type": "ClothingStore",
       "name": "VOLIDAM by Soliya",
+      "url": "https://volidam-by-soliya-2.onrender.com/",
+      "image": "https://volidam-by-soliya-2.onrender.com/3.jpg",
       "description": "Toshkentdagi premium ayollar kiyimlari do'koni: dvoyka kostyumlar, abaya, kardigan, pancho va zamonaviy liboslar.",
       "priceRange": "150000-650000 UZS",
       "currenciesAccepted": "UZS",
@@ -53,7 +58,6 @@
     }
     </script>
 
-    <!-- Tezlik uchun Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -90,7 +94,7 @@
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes popIn { 0% { opacity: 0; transform: scale(0.9) translateY(18px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
         @keyframes slideInRight { from { transform: translateX(100%); opacity: 0.7; } to { transform: translateX(0); opacity: 1; } }
-        @keyframes cardUp { from { opacity: 0; transform: translateY(32px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes cardUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes floatSlow { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
         @keyframes goldGlow { 0%, 100% { box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); } 50% { box-shadow: 0 0 30px rgba(212, 175, 55, 0.75); } }
         @keyframes shimmer { 0% { transform: translateX(-120%) skewX(-20deg); } 100% { transform: translateX(220%) skewX(-20deg); } }
@@ -102,16 +106,13 @@
         .anim-fade { animation: fadeIn 0.25s ease both; }
         .anim-pop { animation: popIn 0.32s cubic-bezier(0.16, 1, 0.3, 1) both; }
         .anim-drawer { animation: slideInRight 0.36s cubic-bezier(0.16, 1, 0.3, 1) both; }
-        .anim-card { animation: cardUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) both; }
+        .anim-card { animation: cardUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) both; }
         .anim-float { animation: floatSlow 3.5s ease-in-out infinite; }
         .anim-glow { animation: goldGlow 3s ease-in-out infinite; }
         .anim-hero-bg { animation: heroZoom 18s ease-in-out infinite; }
         .heart-pop { animation: heartPop 0.45s cubic-bezier(0.16, 1, 0.3, 1); }
         .badge-bump { animation: badgeBump 0.38s cubic-bezier(0.16, 1, 0.3, 1); }
         .anim-shake { animation: shake 0.4s ease; }
-
-        .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
-        .reveal.visible { opacity: 1; transform: translateY(0); }
 
         .btn-shimmer { position: relative; overflow: hidden; }
         .btn-shimmer::after { content: ''; position: absolute; top: 0; left: 0; width: 45%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent); transform: translateX(-120%) skewX(-20deg); }
@@ -173,7 +174,7 @@
         <div id="hero-bg-el" class="absolute inset-0 opacity-45 bg-cover bg-center anim-hero-bg" style="background-image: url('3.jpg');" role="img" aria-label="VOLIDAM by Soliya ayollar kiyimlari kolleksiyasi"></div>
         <div class="absolute inset-0 bg-gradient-to-r from-gray-950 via-gray-900/85 to-transparent"></div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="max-w-xl anim-card" style="animation-delay: 150ms;">
+            <div class="max-w-xl anim-card">
                 <span class="inline-block text-gold-400 text-xs font-bold tracking-[0.3em] uppercase bg-gold-500/20 px-3.5 py-1.5 rounded-full border border-gold-500/30 anim-float">Premyera Kolleksiya</span>
                 <h1 class="font-serif text-4xl sm:text-6xl font-bold mt-4 mb-6 leading-tight">VOLIDAM by Soliya — Nafislik va Qulaylik</h1>
                 <p class="text-gray-300 text-sm sm:text-base mb-8 leading-relaxed">VOLIDAM by Soliya brendining Toshkentdagi eksklyuziv ayollar kiyimlari to'plami: dvoyka kostyumlar, abaya, kardigan va zamonaviy liboslar.</p>
@@ -187,7 +188,7 @@
 
     <!-- Main Catalog Section -->
     <main id="catalog" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6 reveal">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
             <div>
                 <span class="text-gold-600 font-semibold text-xs tracking-[0.25em] uppercase">Eksklyuziv Assortiment</span>
                 <h2 class="font-serif text-3xl sm:text-4xl font-bold mt-2 text-gray-900">Ayollar Kiyimlari Katalogi</h2>
@@ -208,17 +209,12 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8" id="product-grid">
-            <div class="col-span-full text-center py-16 text-gray-400 text-sm">
-                <i class="fa-solid fa-spinner fa-spin text-gold-500 text-2xl mb-3 block"></i>
-                Mahsulotlar yuklanmoqda...
-            </div>
-        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8" id="product-grid"></div>
     </main>
 
     <!-- About Section -->
     <section id="about" class="bg-white py-20 border-t border-gray-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 reveal">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div class="grid grid-cols-2 gap-4">
                     <img id="about-img-1" src="3.jpg" loading="lazy" alt="VOLIDAM by Soliya bordo rangli ayollar dvoyka kostyumi" class="rounded-2xl shadow-lg object-cover h-72 w-full hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/400x500/111/d4af37?text=VOLIDAM'">
@@ -255,7 +251,7 @@
 
     <!-- Contact Section -->
     <section id="contact" class="bg-gray-900 text-white py-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center reveal">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <span class="text-gold-400 font-semibold text-xs tracking-[0.25em] uppercase">Bog'lanish</span>
             <h2 class="font-serif text-3xl font-bold mt-2 mb-4">Savollaringiz bormi?</h2>
             <p class="text-gray-400 text-sm max-w-xl mx-auto mb-8">Saytdan o'zingizga yoqqan libosni tanlab buyurtma bering yoki adminimizga yozing.</p>
@@ -291,18 +287,17 @@
         </div>
     </div>
 
-    <!-- ADMIN PANEL DASHBOARD (MongoDB ga ulangan, telefonga moslangan) -->
+    <!-- ADMIN PANEL DASHBOARD -->
     <div id="admin-dashboard-modal" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:p-4 bg-black/70 backdrop-blur-sm hidden">
         <div class="bg-white rounded-t-3xl sm:rounded-2xl max-w-2xl w-full p-4 sm:p-6 shadow-2xl relative overflow-y-auto max-h-[92vh] custom-scrollbar anim-pop">
             <div class="flex justify-between items-center mb-4 pb-3 border-b sticky top-0 bg-white z-10">
                 <div>
                     <h3 class="font-serif text-lg sm:text-xl font-bold text-gray-900">🛠 Admin Panel</h3>
-                    <p class="text-[11px] text-green-600 font-medium">● MongoDB bazasiga ulangan (hamma ko'radi)</p>
+                    <p class="text-[11px] text-green-600 font-medium">● MongoDB bazasiga ulangan</p>
                 </div>
                 <button onclick="closeAdminDashboard()" aria-label="Admin panelni yopish" class="w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center text-lg"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
-            <!-- Mobil Tab Tugmalari -->
             <div class="grid grid-cols-3 gap-1.5 bg-gray-100 p-1 rounded-xl mb-5 text-xs font-semibold">
                 <button type="button" id="tab-btn-add" onclick="switchAdminTab('add')" class="py-2.5 rounded-lg bg-white text-gray-900 shadow-sm">➕ Qo'shish</button>
                 <button type="button" id="tab-btn-list" onclick="switchAdminTab('list')" class="py-2.5 rounded-lg text-gray-600">📦 Ro'yxat</button>
@@ -318,7 +313,6 @@
                         <input type="text" id="new-p-price" placeholder="Narxi (Masalan: 450.000 so'm) *" required class="px-3.5 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:border-gold-500">
                     </div>
 
-                    <!-- Telefondan rasm tanlash -->
                     <div class="bg-white p-3 rounded-xl border border-gray-200 space-y-2.5">
                         <label class="block text-xs font-semibold text-gray-700">Kiyim rasmi:</label>
                         <div class="flex flex-col sm:flex-row gap-2">
@@ -344,7 +338,7 @@
                 </form>
             </div>
 
-            <!-- 2-TAB: KIYIMLAR RO'YXATI VA O'CHIRISH -->
+            <!-- 2-TAB: RO'YXAT -->
             <div id="admin-tab-list" class="hidden">
                 <div class="flex items-center justify-between mb-3">
                     <h4 class="font-bold text-sm text-gray-900">📦 Barcha kiyimlar (<span id="admin-count">0</span> ta)</h4>
@@ -353,7 +347,7 @@
                 <div id="admin-products-list" class="space-y-2.5 max-h-[55vh] overflow-y-auto pr-1 custom-scrollbar"></div>
             </div>
 
-            <!-- 3-TAB: SAYT RASMLARINI O'ZGARTIRISH -->
+            <!-- 3-TAB: RASMLAR -->
             <div id="admin-tab-images" class="hidden bg-gray-50 p-4 rounded-xl border border-gray-200">
                 <h4 class="font-bold text-sm text-gray-900 mb-3">🖼 Sayt rasmlarini o'zgartirish</h4>
                 <div class="space-y-3">
@@ -483,8 +477,8 @@
     </div>
 
     <script>
-        function esc(str) { return String(str || '').replace(/[&<>"']/g, c => ({'&':'&','<':'<','>':'>','"':'"',"'":'''}[c])); }
-        function loadLS(key, fallback) { try { const v = JSON.parse(localStorage.getItem(key)); return v ?? fallback; } catch (e) { return fallback; } }
+        function esc(str) { return String(str || '').replace(/[&<>"']/g, function(c) { return {'&':'&','<':'<','>':'>','"':'"',"'":'''}[c]; }); }
+        function loadLS(key, fallback) { try { const v = JSON.parse(localStorage.getItem(key)); return v !== null ? v : fallback; } catch (e) { return fallback; } }
         function saveLS(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) {} }
         function show(id) { document.getElementById(id).classList.remove('hidden'); }
         function hide(id) { document.getElementById(id).classList.add('hidden'); }
@@ -496,60 +490,104 @@
             el.classList.add(cls);
         }
 
+        const FALLBACK_PRODUCTS = [
+            { _id: "f1", name: "Bordo Dvoyka Kostyum", priceNum: 450000, priceStr: "450.000 so'm", description: "Yuqori sifatli materialdan ishlangan zamonaviy bordo rangli ayollar dvoykasi.", images: ["3.jpg"] },
+            { _id: "f2", name: "Qora Dvoyka Kostyum", priceNum: 450000, priceStr: "450.000 so'm", description: "Jozibali va qulay qora rangdagi eksklyuziv model.", images: ["4.jpg"] },
+            { _id: "f3", name: "Kulrang Yubka Komplekt", priceNum: 580000, priceStr: "580.000 so'm", description: "Hashamatli uslubdagi sviter va yubka jamlanmasi.", images: ["5.jpg"] },
+            { _id: "f4", name: "Bej rangli Kostyum-Yubka", priceNum: 550000, priceStr: "550.000 so'm", description: "Kamar bilan bezatilgan nafis bej rangdagi libos.", images: ["6.jpg"] },
+            { _id: "f5", name: "Bordo Mexli Pancho", priceNum: 420000, priceStr: "420.000 so'm", description: "Issiq va hashamatli mexli yoqaga ega pancho dizayni.", images: ["7.jpg"] },
+            { _id: "f6", name: "Kulrang Mexli Pancho", priceNum: 420000, priceStr: "420.000 so'm", description: "Sovuq kunlar uchun qulay va jozibali mexli pancho.", images: ["8.jpg"] },
+            { _id: "f7", name: "Gulli Naqshli Uzun Ko'ylak", priceNum: 480000, priceStr: "480.000 so'm", description: "Naqshinkor gullar bilan bezatilgan nafis ayollar libosi.", images: ["9.jpg"] },
+            { _id: "f8", name: "Xaki rangli Kardigan", priceNum: 450000, priceStr: "450.000 so'm", description: "Zamonaviy va keng bichimdagi yumshoq kardigan.", images: ["10.jpg"] },
+            { _id: "f9", name: "Oq Kardigan va Yubka", priceNum: 520000, priceStr: "520.000 so'm", description: "Yengil va nafis uslubdagi oq kardigan hamda yubka to'plami.", images: ["11.jpg"] },
+            { _id: "f10", name: "Mis rangli Sviter va Shim", priceNum: 460000, priceStr: "460.000 so'm", description: "Qulay sport-klassik uslubdagi zamonaviy to'plam.", images: ["12.jpg"] },
+            { _id: "f11", name: "Qora Zamonaviy Dvoyka", priceNum: 470000, priceStr: "470.000 so'm", description: "Zal va kundalik yurish uchun mos keluvchi qora rangli zamonaviy kostyum.", images: ["13.jpg"] },
+            { _id: "f12", name: "Qora Naqshinkor Abaya", priceNum: 620000, priceStr: "620.000 so'm", description: "O'ziga xos naqshlar bilan bezatilgan hashamatli qora abaya.", images: ["14.jpg"] },
+            { _id: "f13", name: "Premium Klass Abaya", priceNum: 650000, priceStr: "650.000 so'm", description: "Nozik ishlov berilgan yeng qismiga ega premium abaya.", images: ["15.jpg"] },
+            { _id: "f14", name: "Yashil Bo'yinbog'li Sviter", priceNum: 340000, priceStr: "340.000 so'm", description: "Yumshoq va issiq och yashil rangdagi qulay sviter.", images: ["16.jpg"] },
+            { _id: "f15", name: "Qahva rangli Sharf va Shapka to'plami", priceNum: 280000, priceStr: "280.000 so'm", description: "Brend logotipli issiq bosh kiyim va sharf to'plami.", images: ["17.jpg"] },
+            { _id: "f16", name: "Qora Sharf va Shapka to'plami", priceNum: 280000, priceStr: "280.000 so'm", description: "Qora rangdagi qulay va zamonaviy qishki to'plam.", images: ["18.jpg"] },
+            { _id: "f17", name: "Sut rangli Shapka", priceNum: 150000, priceStr: "150.000 so'm", description: "Italiya dizaynidagi zamonaviy issiq bosh kiyim.", images: ["19.jpg"] },
+            { _id: "f18", name: "Bej rangli Sharf va Shapka to'plami", priceNum: 280000, priceStr: "280.000 so'm", description: "Qishki mavsum uchun nafis bej aksessuarlar.", images: ["20.jpg"] },
+            { _id: "f19", name: "Kulrang Gulli Kardigan", priceNum: 450000, priceStr: "450.000 so'm", description: "O'ziga xos gulli naqshlar tushirilgan kulrang kardigan.", images: ["21.jpg"] },
+            { _id: "f20", name: "Chiziqli Sviter", priceNum: 320000, priceStr: "320.000 so'm", description: "Oq va qora chiziqli zamonaviy dizayndagi sviter.", images: ["22.jpg"] },
+            { _id: "f21", name: "Qizil Qo'shaloq Tugmali Cape", priceNum: 490000, priceStr: "490.000 so'm", description: "Tilla rang tugmali va o'ziga xos bichimdagi qizil cape libosi.", images: ["23.jpg"] },
+            { _id: "f22", name: "Qora Mexli Cape", priceNum: 510000, priceStr: "510.000 so'm", description: "Oq sun'iy mex yoqali hashamatli qora cape.", images: ["24.jpg"] },
+            { _id: "f23", name: "Kulrang Sport Kostyum", priceNum: 460000, priceStr: "460.000 so'm", description: "Qulay va keng bichimli sport stilidagi to'plam.", images: ["25.jpg"] },
+            { _id: "f24", name: "Qora Keng Sviter", priceNum: 350000, priceStr: "350.000 so'm", description: "Yengil va qulay qora rangdagi kundalik sviter.", images: ["26.jpg"] },
+            { _id: "f25", name: "Bordo rangli Keng Sviter", priceNum: 350000, priceStr: "350.000 so'm", description: "Issiq va jozibali bordo rangli yumshoq sviter.", images: ["27.jpg"] },
+            { _id: "f26", name: "Bej rangli Uzun Tunika", priceNum: 420000, priceStr: "420.000 so'm", description: "Oppoq aksessuarlar bilan mukammal mos tushuvchi bej tunika.", images: ["28.jpg"] },
+            { _id: "f27", name: "To'q kulrang Dvoyka", priceNum: 450000, priceStr: "450.000 so'm", description: "Zanjirli aksessuarlar bilan to'ldirilgan to'q kulrang kostyum.", images: ["29.jpg"] }
+        ];
+
         const DEFAULT_SITE_IMAGES = { hero: '3.jpg', about1: '3.jpg', about2: '4.jpg' };
 
-        let products = [];
-        let siteImages = { ...DEFAULT_SITE_IMAGES };
+        let products = FALLBACK_PRODUCTS.slice();
+        let siteImages = { hero: '3.jpg', about1: '3.jpg', about2: '4.jpg' };
         let cart = loadLS('volidam_cart_v2', []);
         let wishlist = loadLS('volidam_wishlist_v2', []);
         let adminPass = sessionStorage.getItem('volidam_admin_pass') || '';
         let pageReady = false;
 
         let pendingProductImage = '';
-        let pendingSiteImages = { ...DEFAULT_SITE_IMAGES };
+        let pendingSiteImages = { hero: '3.jpg', about1: '3.jpg', about2: '4.jpg' };
 
         function saveCart() { saveLS('volidam_cart_v2', cart); }
         function saveWishlist() { saveLS('volidam_wishlist_v2', wishlist); }
-
         function getPid(p) { return String(p._id || p.id); }
 
-        // Serverdan (MongoDB) barcha mahsulot va sayt rasmlarini yuklash
+        async function fetchWithTimeout(url, ms) {
+            const controller = new AbortController();
+            const timer = setTimeout(function() { controller.abort(); }, ms);
+            try {
+                return await fetch(url, { signal: controller.signal });
+            } finally {
+                clearTimeout(timer);
+            }
+        }
+
         async function fetchAllFromServer() {
             try {
-                const [prodRes, imgRes] = await Promise.all([
-                    fetch('/api/products'),
-                    fetch('/api/site-images')
+                const results = await Promise.all([
+                    fetchWithTimeout('/api/products', 7000).catch(function() { return null; }),
+                    fetchWithTimeout('/api/site-images', 7000).catch(function() { return null; })
                 ]);
-                if (prodRes.ok) {
-                    products = await prodRes.json();
+                const prodRes = results[0];
+                const imgRes = results[1];
+
+                if (prodRes && prodRes.ok) {
+                    const data = await prodRes.json();
+                    if (Array.isArray(data) && data.length > 0) {
+                        products = data;
+                    }
                 }
-                if (imgRes.ok) {
-                    const data = await imgRes.json();
+                if (imgRes && imgRes.ok) {
+                    const imgData = await imgRes.json();
                     siteImages = {
-                        hero: data.hero || '3.jpg',
-                        about1: data.about1 || '3.jpg',
-                        about2: data.about2 || '4.jpg'
+                        hero: imgData.hero || '3.jpg',
+                        about1: imgData.about1 || '3.jpg',
+                        about2: imgData.about2 || '4.jpg'
                     };
                     applySiteImages();
                 }
             } catch (err) {
                 console.error('Serverdan yuklash xatosi:', err);
-                showToast("Serverga ulanib bo'lmadi!");
             }
             applyView();
             updateCartUI();
             updateWishlistUI();
         }
 
-        // Rasmni telefon galereyasidan o'qish va yengil hajmga siqish
-        function compressImageFile(file, maxWidth = 850, quality = 0.78) {
-            return new Promise((resolve, reject) => {
+        function compressImageFile(file, maxWidth, quality) {
+            maxWidth = maxWidth || 850;
+            quality = quality || 0.78;
+            return new Promise(function(resolve, reject) {
                 const reader = new FileReader();
-                reader.onerror = () => reject(new Error('Faylni o‘qib bo‘lmadi'));
-                reader.onload = (ev) => {
+                reader.onerror = function() { reject(new Error('Fayl xatosi')); };
+                reader.onload = function(ev) {
                     const img = new Image();
-                    img.onerror = () => resolve(ev.target.result);
-                    img.onload = () => {
+                    img.onerror = function() { resolve(ev.target.result); };
+                    img.onload = function() {
                         let w = img.width;
                         let h = img.height;
                         if (w > maxWidth) {
@@ -577,27 +615,27 @@
             const heroBg = document.getElementById('hero-bg-el');
             const about1 = document.getElementById('about-img-1');
             const about2 = document.getElementById('about-img-2');
-            if (heroBg) heroBg.style.backgroundImage = `url("${siteImages.hero || '3.jpg'}")`;
+            if (heroBg) heroBg.style.backgroundImage = 'url("' + (siteImages.hero || '3.jpg') + '")';
             if (about1) about1.src = siteImages.about1 || '3.jpg';
             if (about2) about2.src = siteImages.about2 || '4.jpg';
         }
 
         function populateSiteImageInputs() {
-            pendingSiteImages = { ...siteImages };
-            ['hero', 'about1', 'about2'].forEach((slot) => {
+            pendingSiteImages = { hero: siteImages.hero, about1: siteImages.about1, about2: siteImages.about2 };
+            ['hero', 'about1', 'about2'].forEach(function(slot) {
                 const val = siteImages[slot] || DEFAULT_SITE_IMAGES[slot];
-                const input = document.getElementById(`site-${slot}-img`);
-                const preview = document.getElementById(`preview-${slot}-img`);
-                if (input) input.value = val.startsWith('data:') ? '' : val;
+                const input = document.getElementById('site-' + slot + '-img');
+                const preview = document.getElementById('preview-' + slot + '-img');
+                if (input) input.value = val.indexOf('data:') === 0 ? '' : val;
                 if (preview) preview.src = val;
             });
         }
 
         function onSiteUrlInput(slot) {
-            const val = document.getElementById(`site-${slot}-img`).value.trim();
+            const val = document.getElementById('site-' + slot + '-img').value.trim();
             if (val) {
                 pendingSiteImages[slot] = val;
-                const preview = document.getElementById(`preview-${slot}-img`);
+                const preview = document.getElementById('preview-' + slot + '-img');
                 if (preview) preview.src = val;
             }
         }
@@ -610,9 +648,9 @@
                 const maxW = slot === 'hero' ? 1200 : 850;
                 const dataUrl = await compressImageFile(file, maxW, 0.78);
                 pendingSiteImages[slot] = dataUrl;
-                const preview = document.getElementById(`preview-${slot}-img`);
+                const preview = document.getElementById('preview-' + slot + '-img');
                 if (preview) preview.src = dataUrl;
-                const urlInput = document.getElementById(`site-${slot}-img`);
+                const urlInput = document.getElementById('site-' + slot + '-img');
                 if (urlInput) urlInput.value = '';
                 showToast("Rasm yuklandi! Pastdagi 'Rasmlarni saqlash' tugmasini bosing.");
             } catch (err) {
@@ -628,25 +666,23 @@
             try {
                 const res = await fetch('/api/site-images', {
                     method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-admin-pass': adminPass
-                    },
+                    headers: { 'Content-Type': 'application/json', 'x-admin-pass': adminPass },
                     body: JSON.stringify(pendingSiteImages)
                 });
-                if (!res.ok) throw new Error('Saqlash xatosi');
-                siteImages = await res.json();
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Saqlash xatosi');
+                siteImages = data;
                 applySiteImages();
                 showToast('Sayt rasmlari MongoDB ga saqlandi!');
             } catch (err) {
-                showToast('Xatolik! Qayta urinib ko‘ring.');
+                showToast(err.message || 'Xatolik!');
             }
             btn.disabled = false;
             btn.textContent = 'Rasmlarni saqlash';
         }
 
         async function resetSiteImages() {
-            pendingSiteImages = { ...DEFAULT_SITE_IMAGES };
+            pendingSiteImages = { hero: '3.jpg', about1: '3.jpg', about2: '4.jpg' };
             await saveSiteImagesForm();
             populateSiteImageInputs();
         }
@@ -693,9 +729,9 @@
         }
 
         function switchAdminTab(tab) {
-            ['add', 'list', 'images'].forEach((t) => {
-                const panel = document.getElementById(`admin-tab-${t}`);
-                const btn = document.getElementById(`tab-btn-${t}`);
+            ['add', 'list', 'images'].forEach(function(t) {
+                const panel = document.getElementById('admin-tab-' + t);
+                const btn = document.getElementById('tab-btn-' + t);
                 if (t === tab) {
                     panel.classList.remove('hidden');
                     btn.className = 'py-2.5 rounded-lg bg-white text-gray-900 shadow-sm';
@@ -711,15 +747,15 @@
         function renderProducts(list) {
             const grid = document.getElementById('product-grid');
             if (!list.length) {
-                grid.innerHTML = `<div class="col-span-full text-center py-12 text-gray-400 text-sm">Hech narsa topilmadi.</div>`;
+                grid.innerHTML = '<div class="col-span-full text-center py-12 text-gray-400 text-sm">Hech narsa topilmadi.</div>';
                 return;
             }
-            grid.innerHTML = list.map((p, idx) => {
+            grid.innerHTML = list.map(function(p, idx) {
                 const pid = getPid(p);
                 const imgSrc = (p.images && p.images[0]) || '3.jpg';
                 const liked = wishlist.includes(pid);
                 return `
-                <article class="product-card bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl border border-gray-100 flex flex-col group anim-card" style="animation-delay:${(idx % 8) * 50}ms">
+                <article class="product-card bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl border border-gray-100 flex flex-col group anim-card" style="animation-delay:${(idx % 8) * 40}ms">
                     <div class="relative h-80 overflow-hidden bg-gray-100 cursor-pointer" onclick="openProductModal('${esc(pid)}')">
                         <img src="${esc(imgSrc)}" loading="lazy" alt="${esc(p.name)} — VOLIDAM by Soliya" class="w-full h-full object-cover group-hover:scale-110 transition duration-700 ease-out" onerror="this.src='https://placehold.co/400x500/111/d4af37?text=VOLIDAM'">
                         <button id="heart-btn-${esc(pid)}" aria-label="Sevimlilarga qo'shish" onclick="event.stopPropagation(); toggleWishlist('${esc(pid)}')" class="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm shadow flex items-center justify-center text-gray-700 hover:text-red-500 transition">
@@ -747,7 +783,7 @@
             if (pageReady && e && e.isTrusted && input.value.trim().toLowerCase() === 'adminvolidam') {
                 input.value = '';
                 show('admin-login-modal');
-                setTimeout(() => document.getElementById('admin-pass-input').focus(), 60);
+                setTimeout(function() { document.getElementById('admin-pass-input').focus(); }, 60);
                 applyView();
                 return;
             }
@@ -757,13 +793,12 @@
         function applyView() {
             const query = document.getElementById('search-input').value.trim().toLowerCase();
             const sort = document.getElementById('sort-select').value;
-            let list = products.filter(
-                (p) =>
-                    String(p.name || '').toLowerCase().includes(query) ||
-                    String(p.description || '').toLowerCase().includes(query)
-            );
-            if (sort === 'price-asc') list.sort((a, b) => (a.priceNum || 0) - (b.priceNum || 0));
-            if (sort === 'price-desc') list.sort((a, b) => (b.priceNum || 0) - (a.priceNum || 0));
+            let list = products.filter(function(p) {
+                return String(p.name || '').toLowerCase().includes(query) ||
+                       String(p.description || '').toLowerCase().includes(query);
+            });
+            if (sort === 'price-asc') list.sort(function(a, b) { return (a.priceNum || 0) - (b.priceNum || 0); });
+            if (sort === 'price-desc') list.sort(function(a, b) { return (b.priceNum || 0) - (a.priceNum || 0); });
             renderProducts(list);
         }
 
@@ -811,14 +846,15 @@
         function renderAdminProductsList() {
             const container = document.getElementById('admin-products-list');
             const countEl = document.getElementById('admin-count');
-            const q = (document.getElementById('admin-list-search')?.value || '').trim().toLowerCase();
-            const filtered = products.filter((p) => String(p.name || '').toLowerCase().includes(q));
+            const searchEl = document.getElementById('admin-list-search');
+            const q = (searchEl ? searchEl.value : '').trim().toLowerCase();
+            const filtered = products.filter(function(p) { return String(p.name || '').toLowerCase().includes(q); });
             if (countEl) countEl.textContent = products.length;
             if (!filtered.length) {
-                container.innerHTML = `<p class="text-center text-gray-400 text-xs py-6">Kiyim topilmadi.</p>`;
+                container.innerHTML = '<p class="text-center text-gray-400 text-xs py-6">Kiyim topilmadi.</p>';
                 return;
             }
-            container.innerHTML = filtered.map((p) => {
+            container.innerHTML = filtered.map(function(p) {
                 const pid = getPid(p);
                 const imgSrc = (p.images && p.images[0]) || '3.jpg';
                 return `
@@ -858,28 +894,19 @@
                 const priceNum = parseInt(priceStr.replace(/\D/g, ''), 10) || 0;
                 const res = await fetch('/api/products', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-admin-pass': adminPass
-                    },
-                    body: JSON.stringify({
-                        name,
-                        priceNum,
-                        priceStr,
-                        description,
-                        images: [finalImg]
-                    })
+                    headers: { 'Content-Type': 'application/json', 'x-admin-pass': adminPass },
+                    body: JSON.stringify({ name, priceNum, priceStr, description, images: [finalImg] })
                 });
-                if (!res.ok) throw new Error('Qo‘shishda xato');
-                const created = await res.json();
-                products.unshift(created);
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Qo‘shishda xato');
+                products.unshift(data);
                 document.getElementById('add-product-form').reset();
                 clearProductUpload();
                 renderAdminProductsList();
                 applyView();
                 showToast("Yangi kiyim bazaga qo'shildi!");
             } catch (err) {
-                showToast("Saqlashda xatolik! Qayta urinib ko'ring.");
+                showToast(err.message || 'Saqlashda xatolik!');
             }
 
             btn.disabled = false;
@@ -889,14 +916,15 @@
         async function deleteProduct(id) {
             if (!confirm("Bu kiyimni rostdan ham o'chirmoqchimisiz?")) return;
             try {
-                const res = await fetch(`/api/products/${encodeURIComponent(id)}`, {
+                const res = await fetch('/api/products/' + encodeURIComponent(id), {
                     method: 'DELETE',
                     headers: { 'x-admin-pass': adminPass }
                 });
-                if (!res.ok) throw new Error('O‘chirishda xato');
-                products = products.filter((p) => getPid(p) !== id);
-                cart = cart.filter((c) => c.id !== id);
-                wishlist = wishlist.filter((w) => w !== id);
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'O‘chirishda xato');
+                products = products.filter(function(p) { return getPid(p) !== id; });
+                cart = cart.filter(function(c) { return c.id !== id; });
+                wishlist = wishlist.filter(function(w) { return w !== id; });
                 saveCart();
                 saveWishlist();
                 renderAdminProductsList();
@@ -905,12 +933,12 @@
                 applyView();
                 showToast("Kiyim o'chirildi!");
             } catch (err) {
-                showToast("O'chirishda xatolik!");
+                showToast(err.message || "O'chirishda xatolik!");
             }
         }
 
         function openProductModal(id) {
-            const p = products.find((x) => getPid(x) === id);
+            const p = products.find(function(x) { return getPid(x) === id; });
             if (!p) return;
             const imgSrc = (p.images && p.images[0]) || '3.jpg';
             document.getElementById('modal-content').innerHTML = `
@@ -946,14 +974,14 @@
             m.classList.contains('hidden') ? (updateWishlistUI(), show('wishlist-modal')) : hide('wishlist-modal');
         }
         function updateWishlistUI() {
-            const items = products.filter((p) => wishlist.includes(getPid(p)));
+            const items = products.filter(function(p) { return wishlist.includes(getPid(p)); });
             document.getElementById('wishlist-badge').textContent = items.length;
             const c = document.getElementById('wishlist-items-container');
             if (!items.length) {
-                c.innerHTML = `<p class="text-center text-gray-400 text-sm py-10">Sevimlilar ro'yxati bo'sh.</p>`;
+                c.innerHTML = '<p class="text-center text-gray-400 text-sm py-10">Sevimlilar ro\'yxati bo\'sh.</p>';
                 return;
             }
-            c.innerHTML = items.map((p) => {
+            c.innerHTML = items.map(function(p) {
                 const pid = getPid(p);
                 const imgSrc = (p.images && p.images[0]) || '3.jpg';
                 return `
@@ -969,16 +997,16 @@
         }
 
         function addToCart(id) {
-            const item = cart.find((c) => c.id === id);
+            const item = cart.find(function(c) { return c.id === id; });
             if (item) item.qty += 1;
-            else cart.push({ id, qty: 1 });
+            else cart.push({ id: id, qty: 1 });
             saveCart();
             updateCartUI();
             bump('cart-badge', 'badge-bump');
             showToast("Savatchaga qo'shildi!");
         }
         function changeQty(id, delta) {
-            const idx = cart.findIndex((c) => c.id === id);
+            const idx = cart.findIndex(function(c) { return c.id === id; });
             if (idx === -1) return;
             cart[idx].qty += delta;
             if (cart[idx].qty <= 0) cart.splice(idx, 1);
@@ -993,16 +1021,16 @@
             let totalQty = 0;
             let totalSum = 0;
             const c = document.getElementById('cart-items-container');
-            const validItems = cart.filter((item) => products.some((x) => getPid(x) === item.id));
+            const validItems = cart.filter(function(item) { return products.some(function(x) { return getPid(x) === item.id; }); });
 
             if (!validItems.length) {
                 document.getElementById('cart-badge').textContent = 0;
-                c.innerHTML = `<p class="text-center text-gray-400 text-sm py-10">Savatchangiz bo'sh.</p>`;
+                c.innerHTML = '<p class="text-center text-gray-400 text-sm py-10">Savatchangiz bo\'sh.</p>';
                 document.getElementById('cart-total').textContent = "0 so'm";
                 return;
             }
-            c.innerHTML = validItems.map((item) => {
-                const p = products.find((x) => getPid(x) === item.id);
+            c.innerHTML = validItems.map(function(item) {
+                const p = products.find(function(x) { return getPid(x) === item.id; });
                 if (!p) return '';
                 totalQty += item.qty;
                 totalSum += (p.priceNum || 0) * item.qty;
@@ -1041,15 +1069,13 @@
             btn.disabled = true;
             btn.textContent = 'Yuborilmoqda...';
 
-            const items = cart
-                .map((c) => {
-                    const p = products.find((x) => getPid(x) === c.id);
-                    return p ? { name: p.name, quantity: c.qty, priceStr: p.priceStr } : null;
-                })
-                .filter(Boolean);
+            const items = cart.map(function(c) {
+                const p = products.find(function(x) { return getPid(x) === c.id; });
+                return p ? { name: p.name, quantity: c.qty, priceStr: p.priceStr } : null;
+            }).filter(Boolean);
 
-            const totalAmount = cart.reduce((sum, c) => {
-                const p = products.find((x) => getPid(x) === c.id);
+            const totalAmount = cart.reduce(function(sum, c) {
+                const p = products.find(function(x) { return getPid(x) === c.id; });
                 return sum + (p ? (p.priceNum || 0) * c.qty : 0);
             }, 0);
 
@@ -1057,9 +1083,9 @@
                 customerName: document.getElementById('client-name').value.trim(),
                 phone: document.getElementById('client-phone').value.trim(),
                 address: document.getElementById('client-address').value.trim(),
-                items,
+                items: items,
                 totalText: totalAmount.toLocaleString('uz-UZ') + " so'm",
-                totalAmount
+                totalAmount: totalAmount
             };
 
             try {
@@ -1090,26 +1116,16 @@
             document.getElementById('toast-message').textContent = msg;
             t.classList.remove('translate-y-24', 'opacity-0');
             clearTimeout(toastTimer);
-            toastTimer = setTimeout(() => t.classList.add('translate-y-24', 'opacity-0'), 3000);
+            toastTimer = setTimeout(function() { t.classList.add('translate-y-24', 'opacity-0'); }, 3000);
         }
 
-        function initReveal() {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1 });
-            document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
-        }
-
-        window.onload = async function() {
-            initReveal();
-            await fetchAllFromServer();
-            setTimeout(() => { pageReady = true; }, 500);
-        };
+        document.addEventListener('DOMContentLoaded', function() {
+            applyView();
+            updateCartUI();
+            updateWishlistUI();
+            fetchAllFromServer();
+            setTimeout(function() { pageReady = true; }, 300);
+        });
     </script>
 </body>
 </html>
