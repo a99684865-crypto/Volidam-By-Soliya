@@ -18,13 +18,24 @@ const SECRET_PASS = (process.env.SECRET_PASS || 'volidam777').trim();
 app.use(express.json({ limit: '20mb' }));
 app.use(express.urlencoded({ extended: true, limit: '20mb' }));
 
-// Statik fayllar
 app.use(express.static(__dirname));
 app.use(express.static(path.join(__dirname, 'public')));
 
 function escHtml(str) {
   return String(str || '').replace(/[&<>]/g, (c) => ({ '&': '&', '<': '<', '>': '>' }[c]));
 }
+
+const DEFAULT_TEXTS = {
+  aboutTitle: "VOLIDAM by Soliya — Toshkent",
+  aboutDesc: "Bizning brendimiz har bir ayolning o'ziga xos go'zalligi va nafosatini ta'kidlash uchun yaratilgan. Yuqori sifatli materiallar, mukammal bichim va zamonaviy dizayn uyg'unligi — bizning asosiy ustunligimizdir.",
+  aboutAddress: "Manzil: Toshkent shahri, Tinchlik, Jahon School to'g'risida",
+  contactTitle: "Savollaringiz bormi?",
+  contactDesc: "Saytdan o'zingizga yoqqan libosni tanlab buyurtma bering yoki adminimizga yozing.",
+  telegramText: "Admin: @volidambysoliya",
+  telegramUrl: "https://t.me/volidambysoliya",
+  footerBrand: "VOLIDAM by Soliya",
+  footerCopy: "© 2026 VOLIDAM by Soliya. Barcha huquqlar himoyalangan."
+};
 
 const DEFAULT_PRODUCTS = [
   { name: "Bordo Dvoyka Kostyum", priceNum: 450000, priceStr: "450.000 so'm", description: "Yuqori sifatli materialdan ishlangan zamonaviy bordo rangli ayollar dvoykasi.", images: ["3.jpg"] },
@@ -75,6 +86,17 @@ const siteConfigSchema = new mongoose.Schema(
     hero: { type: String, default: '3.jpg' },
     about1: { type: String, default: '3.jpg' },
     about2: { type: String, default: '4.jpg' },
+    texts: {
+      aboutTitle: { type: String, default: DEFAULT_TEXTS.aboutTitle },
+      aboutDesc: { type: String, default: DEFAULT_TEXTS.aboutDesc },
+      aboutAddress: { type: String, default: DEFAULT_TEXTS.aboutAddress },
+      contactTitle: { type: String, default: DEFAULT_TEXTS.contactTitle },
+      contactDesc: { type: String, default: DEFAULT_TEXTS.contactDesc },
+      telegramText: { type: String, default: DEFAULT_TEXTS.telegramText },
+      telegramUrl: { type: String, default: DEFAULT_TEXTS.telegramUrl },
+      footerBrand: { type: String, default: DEFAULT_TEXTS.footerBrand },
+      footerCopy: { type: String, default: DEFAULT_TEXTS.footerCopy }
+    },
     seeded: { type: Boolean, default: false },
     adminChatIds: { type: [Number], default: [] }
   },
@@ -117,7 +139,6 @@ async function getSiteConfig() {
   return cfg;
 }
 
-// MongoDB ulanishi (5 soniya timeout bilan, server qotib qolmasligi uchun)
 mongoose
   .connect(MONGODB_URI, { serverSelectionTimeoutMS: 5000 })
   .then(async () => {
@@ -148,8 +169,6 @@ function requireAdmin(req, res, next) {
 }
 
 // ================= API YO'LLARI =================
-
-// Holatni tekshirish (https://volidam-by-soliya-2.onrender.com/api/health)
 app.get('/api/health', (req, res) => {
   res.json({
     ok: true,
@@ -167,9 +186,7 @@ app.post('/api/admin/verify', (req, res) => {
 });
 
 app.get('/api/products', async (req, res) => {
-  if (!isDbConnected()) {
-    return res.json(fallbackProducts);
-  }
+  if (!isDbConnected()) return res.json(fallbackProducts);
   try {
     const products = await Product.find().sort({ createdAt: -1 });
     if (!products.length) return res.json(fallbackProducts);
@@ -189,22 +206,18 @@ app.post('/api/products', requireAdmin, async (req, res) => {
       ? priceNum
       : parseInt(String(priceStr).replace(/\D/g, ''), 10) || 0;
 
-  const payload = {
-    name: String(name).trim(),
-    priceStr: String(priceStr).trim(),
-    priceNum: cleanPriceNum,
-    description: String(description || '').trim(),
-    images: Array.isArray(images) && images.length ? images : ['3.jpg']
-  };
-
   if (!isDbConnected()) {
-    return res.status(503).json({
-      error: "MongoDB ulanmagan! Atlas -> Network Access -> 0.0.0.0/0 ni tekshiring."
-    });
+    return res.status(503).json({ error: 'MongoDB ulanmagan!' });
   }
 
   try {
-    const product = await Product.create(payload);
+    const product = await Product.create({
+      name: String(name).trim(),
+      priceStr: String(priceStr).trim(),
+      priceNum: cleanPriceNum,
+      description: String(description || '').trim(),
+      images: Array.isArray(images) && images.length ? images : ['3.jpg']
+    });
     res.status(201).json(product);
   } catch (err) {
     res.status(400).json({ error: "Mahsulot qo'shishda xatolik", details: err.message });
@@ -212,9 +225,7 @@ app.post('/api/products', requireAdmin, async (req, res) => {
 });
 
 app.delete('/api/products/:id', requireAdmin, async (req, res) => {
-  if (!isDbConnected()) {
-    return res.status(503).json({ error: 'MongoDB ulanmagan!' });
-  }
+  if (!isDbConnected()) return res.status(503).json({ error: 'MongoDB ulanmagan!' });
   try {
     const deleted = await Product.findByIdAndDelete(req.params.id);
     if (!deleted) return res.status(404).json({ error: 'Mahsulot topilmadi' });
@@ -224,6 +235,7 @@ app.delete('/api/products/:id', requireAdmin, async (req, res) => {
   }
 });
 
+// Sayt rasmlari API
 app.get('/api/site-images', async (req, res) => {
   if (!isDbConnected()) return res.json(fallbackSiteImages);
   try {
@@ -239,9 +251,7 @@ app.get('/api/site-images', async (req, res) => {
 });
 
 app.put('/api/site-images', requireAdmin, async (req, res) => {
-  if (!isDbConnected()) {
-    return res.status(503).json({ error: 'MongoDB ulanmagan!' });
-  }
+  if (!isDbConnected()) return res.status(503).json({ error: 'MongoDB ulanmagan!' });
   try {
     const { hero, about1, about2 } = req.body;
     const cfg = await getSiteConfig();
@@ -255,6 +265,52 @@ app.put('/api/site-images', requireAdmin, async (req, res) => {
   }
 });
 
+// Pastki yozuvlar API (Biz haqimizda, Aloqa, Footer)
+app.get('/api/site-texts', async (req, res) => {
+  if (!isDbConnected()) return res.json(DEFAULT_TEXTS);
+  try {
+    const cfg = await getSiteConfig();
+    const t = cfg.texts || {};
+    res.json({
+      aboutTitle: t.aboutTitle || DEFAULT_TEXTS.aboutTitle,
+      aboutDesc: t.aboutDesc || DEFAULT_TEXTS.aboutDesc,
+      aboutAddress: t.aboutAddress || DEFAULT_TEXTS.aboutAddress,
+      contactTitle: t.contactTitle || DEFAULT_TEXTS.contactTitle,
+      contactDesc: t.contactDesc || DEFAULT_TEXTS.contactDesc,
+      telegramText: t.telegramText || DEFAULT_TEXTS.telegramText,
+      telegramUrl: t.telegramUrl || DEFAULT_TEXTS.telegramUrl,
+      footerBrand: t.footerBrand || DEFAULT_TEXTS.footerBrand,
+      footerCopy: t.footerCopy || DEFAULT_TEXTS.footerCopy
+    });
+  } catch (err) {
+    res.json(DEFAULT_TEXTS);
+  }
+});
+
+app.put('/api/site-texts', requireAdmin, async (req, res) => {
+  if (!isDbConnected()) return res.status(503).json({ error: 'MongoDB ulanmagan!' });
+  try {
+    const cfg = await getSiteConfig();
+    const b = req.body || {};
+    cfg.texts = {
+      aboutTitle: String(b.aboutTitle ?? DEFAULT_TEXTS.aboutTitle).trim(),
+      aboutDesc: String(b.aboutDesc ?? DEFAULT_TEXTS.aboutDesc).trim(),
+      aboutAddress: String(b.aboutAddress ?? DEFAULT_TEXTS.aboutAddress).trim(),
+      contactTitle: String(b.contactTitle ?? DEFAULT_TEXTS.contactTitle).trim(),
+      contactDesc: String(b.contactDesc ?? DEFAULT_TEXTS.contactDesc).trim(),
+      telegramText: String(b.telegramText ?? DEFAULT_TEXTS.telegramText).trim(),
+      telegramUrl: String(b.telegramUrl ?? DEFAULT_TEXTS.telegramUrl).trim(),
+      footerBrand: String(b.footerBrand ?? DEFAULT_TEXTS.footerBrand).trim(),
+      footerCopy: String(b.footerCopy ?? DEFAULT_TEXTS.footerCopy).trim()
+    };
+    await cfg.save();
+    res.json(cfg.texts);
+  } catch (err) {
+    res.status(400).json({ error: 'Yozuvlarni saqlashda xatolik' });
+  }
+});
+
+// Buyurtmalar API
 async function handleCreateOrder(req, res) {
   try {
     const customerName = String(req.body.customerName || req.body.name || '').trim();
@@ -279,9 +335,7 @@ async function handleCreateOrder(req, res) {
     }
 
     let order = { customerName, phone, address, items, totalText, totalAmount };
-    if (isDbConnected()) {
-      order = await Order.create(order);
-    }
+    if (isDbConnected()) order = await Order.create(order);
 
     if (bot) {
       try {
@@ -359,9 +413,7 @@ let bot = null;
 if (BOT_TOKEN) {
   bot = new Telegraf(BOT_TOKEN);
 
-  bot.catch((err) => {
-    console.error('⚠️ Bot xatosi:', err.message);
-  });
+  bot.catch((err) => console.error('⚠️ Bot xatosi:', err.message));
 
   bot.start(async (ctx) => {
     await ctx.reply(
