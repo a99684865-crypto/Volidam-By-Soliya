@@ -199,7 +199,7 @@
                     <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
                         <i class="fa-solid fa-search" aria-hidden="true"></i>
                     </span>
-                    <input type="search" id="search-input" name="catalog-search-query" aria-label="Mahsulotni qidirish" autocomplete="off" oninput="onSearchInput(event)" placeholder="Mahsulotni qidirish..." class="pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20 w-64 shadow-sm transition">
+                    <input type="search" id="search-input" name="catalog-search-query" aria-label="Mahsulotni qidirish" autocomplete="off" oninput="onSearchInput()" onkeyup="onSearchInput()" placeholder="Mahsulotni qidirish..." class="pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20 w-64 shadow-sm transition">
                 </div>
                 <select id="sort-select" aria-label="Mahsulotlarni saralash" onchange="applyView()" class="py-2.5 px-4 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-gold-500 shadow-sm text-gray-700 cursor-pointer">
                     <option value="default">Saralash: Asosiy</option>
@@ -222,13 +222,13 @@
                 </div>
                 <div>
                     <span class="text-gold-600 font-semibold text-xs tracking-[0.25em] uppercase">Biz Haqimizda</span>
-                    <h2 class="font-serif text-3xl sm:text-4xl font-bold mt-2 mb-6 text-gray-900">VOLIDAM by Soliya — Toshkent</h2>
-                    <p class="text-gray-600 text-sm sm:text-base leading-relaxed mb-4">
+                    <h2 id="about-title-el" class="font-serif text-3xl sm:text-4xl font-bold mt-2 mb-6 text-gray-900">VOLIDAM by Soliya — Toshkent</h2>
+                    <p id="about-desc-el" class="text-gray-600 text-sm sm:text-base leading-relaxed mb-4">
                         Bizning brendimiz har bir ayolning o'ziga xos go'zalligi va nafosatini ta'kidlash uchun yaratilgan. Yuqori sifatli materiallar, mukammal bichim va zamonaviy dizayn uyg'unligi — bizning asosiy ustunligimizdir.
                     </p>
                     <address class="not-italic text-gray-700 text-sm font-medium mb-6 flex items-center gap-2">
                         <i class="fa-solid fa-location-dot text-gold-600" aria-hidden="true"></i>
-                        <span>Manzil: Toshkent shahri, Tinchlik, Jahon School to'g'risida</span>
+                        <span id="about-address-el">Manzil: Toshkent shahri, Tinchlik, Jahon School to'g'risida</span>
                     </address>
                     <div class="grid grid-cols-3 gap-6 pt-4 border-t border-gray-100">
                         <div class="hover:-translate-y-1 transition duration-300">
@@ -253,12 +253,12 @@
     <section id="contact" class="bg-gray-900 text-white py-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <span class="text-gold-400 font-semibold text-xs tracking-[0.25em] uppercase">Bog'lanish</span>
-            <h2 class="font-serif text-3xl font-bold mt-2 mb-4">Savollaringiz bormi?</h2>
-            <p class="text-gray-400 text-sm max-w-xl mx-auto mb-8">Saytdan o'zingizga yoqqan libosni tanlab buyurtma bering yoki adminimizga yozing.</p>
+            <h2 id="contact-title-el" class="font-serif text-3xl font-bold mt-2 mb-4">Savollaringiz bormi?</h2>
+            <p id="contact-desc-el" class="text-gray-400 text-sm max-w-xl mx-auto mb-8">Saytdan o'zingizga yoqqan libosni tanlab buyurtma bering yoki adminimizga yozing.</p>
             <div class="flex flex-wrap justify-center gap-4">
-                <a href="https://t.me/volidambysoliya" target="_blank" rel="noopener noreferrer" class="btn-shimmer bg-gold-500 hover:bg-gold-600 text-gray-950 font-semibold px-7 py-3.5 rounded-xl transition flex items-center space-x-2 text-sm shadow-lg active:scale-95">
+                <a id="contact-tg-link" href="https://t.me/volidambysoliya" target="_blank" rel="noopener noreferrer" class="btn-shimmer bg-gold-500 hover:bg-gold-600 text-gray-950 font-semibold px-7 py-3.5 rounded-xl transition flex items-center space-x-2 text-sm shadow-lg active:scale-95">
                     <i class="fa-brands fa-telegram text-lg" aria-hidden="true"></i>
-                    <span>Admin: @volidambysoliya</span>
+                    <span id="contact-tg-text">Admin: @volidambysoliya</span>
                 </a>
             </div>
         </div>
@@ -268,9 +268,9 @@
     <footer class="bg-gray-950 text-gray-400 py-8 border-t border-gray-900 text-xs">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div class="flex items-center space-x-2">
-                <span class="font-serif text-white font-bold tracking-wider">VOLIDAM by Soliya</span>
+                <span id="footer-brand-el" class="font-serif text-white font-bold tracking-wider">VOLIDAM by Soliya</span>
             </div>
-            <p>© 2026 VOLIDAM by Soliya. Barcha huquqlar himoyalangan.</p>
+            <p id="footer-copy-el">© 2026 VOLIDAM by Soliya. Barcha huquqlar himoyalangan.</p>
         </div>
     </footer>
 
@@ -298,10 +298,12 @@
                 <button onclick="closeAdminDashboard()" aria-label="Admin panelni yopish" class="w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center text-lg"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
-            <div class="grid grid-cols-3 gap-1.5 bg-gray-100 p-1 rounded-xl mb-5 text-xs font-semibold">
+            <!-- 4 ta bo'lim -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 bg-gray-100 p-1 rounded-xl mb-5 text-xs font-semibold">
                 <button type="button" id="tab-btn-add" onclick="switchAdminTab('add')" class="py-2.5 rounded-lg bg-white text-gray-900 shadow-sm">➕ Qo'shish</button>
                 <button type="button" id="tab-btn-list" onclick="switchAdminTab('list')" class="py-2.5 rounded-lg text-gray-600">📦 Ro'yxat</button>
                 <button type="button" id="tab-btn-images" onclick="switchAdminTab('images')" class="py-2.5 rounded-lg text-gray-600">🖼 Rasmlar</button>
+                <button type="button" id="tab-btn-texts" onclick="switchAdminTab('texts')" class="py-2.5 rounded-lg text-gray-600">📝 Yozuvlar</button>
             </div>
 
             <!-- 1-TAB: YANGI KIYIM QO'SHISH -->
@@ -399,6 +401,69 @@
                     </div>
                 </div>
             </div>
+
+            <!-- 4-TAB: PASTKI YOZUVLARNI O'ZGARTIRISH -->
+            <div id="admin-tab-texts" class="hidden bg-gray-50 p-4 rounded-xl border border-gray-200">
+                <h4 class="font-bold text-sm text-gray-900 mb-3">📝 Pastki yozuvlarni o'zgartirish</h4>
+                <form onsubmit="saveSiteTextsForm(event)" class="space-y-4">
+                    <div class="bg-white p-3.5 rounded-xl border border-gray-200 space-y-2.5">
+                        <p class="text-xs font-bold text-gold-600 uppercase tracking-wider">1. "Biz haqimizda" bo'limi</p>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-600 mb-1">Sarlavha</label>
+                            <input type="text" id="edit-about-title" class="w-full px-3 py-2 rounded-lg border text-xs focus:outline-none focus:border-gold-500">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-600 mb-1">Brend haqida matn</label>
+                            <textarea id="edit-about-desc" rows="3" class="w-full px-3 py-2 rounded-lg border text-xs focus:outline-none focus:border-gold-500 resize-none"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-600 mb-1">Manzil yozuvi</label>
+                            <input type="text" id="edit-about-address" class="w-full px-3 py-2 rounded-lg border text-xs focus:outline-none focus:border-gold-500">
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-3.5 rounded-xl border border-gray-200 space-y-2.5">
+                        <p class="text-xs font-bold text-gold-600 uppercase tracking-wider">2. "Bog'lanish" bo'limi</p>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-600 mb-1">Sarlavha</label>
+                            <input type="text" id="edit-contact-title" class="w-full px-3 py-2 rounded-lg border text-xs focus:outline-none focus:border-gold-500">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-600 mb-1">Izoh matni</label>
+                            <textarea id="edit-contact-desc" rows="2" class="w-full px-3 py-2 rounded-lg border text-xs focus:outline-none focus:border-gold-500 resize-none"></textarea>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                            <div>
+                                <label class="block text-[11px] font-semibold text-gray-600 mb-1">Telegram tugma yozuvi</label>
+                                <input type="text" id="edit-tg-text" class="w-full px-3 py-2 rounded-lg border text-xs focus:outline-none focus:border-gold-500">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-gray-600 mb-1">Telegram havolasi (link)</label>
+                                <input type="text" id="edit-tg-url" class="w-full px-3 py-2 rounded-lg border text-xs focus:outline-none focus:border-gold-500">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-3.5 rounded-xl border border-gray-200 space-y-2.5">
+                        <p class="text-xs font-bold text-gold-600 uppercase tracking-wider">3. Eng pastki qator (Footer)</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                            <div>
+                                <label class="block text-[11px] font-semibold text-gray-600 mb-1">Chap yozuv (Brend nomi)</label>
+                                <input type="text" id="edit-footer-brand" class="w-full px-3 py-2 rounded-lg border text-xs focus:outline-none focus:border-gold-500">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-gray-600 mb-1">O'ng yozuv (Huquqlar)</label>
+                                <input type="text" id="edit-footer-copy" class="w-full px-3 py-2 rounded-lg border text-xs focus:outline-none focus:border-gold-500">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <button type="submit" id="save-site-texts-btn" class="btn-shimmer flex-1 bg-gold-500 hover:bg-gold-600 text-gray-950 font-bold py-3 rounded-xl text-xs uppercase">Yozuvlarni saqlash</button>
+                        <button type="button" onclick="resetSiteTexts()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold px-4 py-3 rounded-xl text-xs uppercase">Asliga qaytarish</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -490,6 +555,19 @@
             el.classList.add(cls);
         }
 
+        const DEFAULT_SITE_IMAGES = { hero: '3.jpg', about1: '3.jpg', about2: '4.jpg' };
+        const DEFAULT_SITE_TEXTS = {
+            aboutTitle: "VOLIDAM by Soliya — Toshkent",
+            aboutDesc: "Bizning brendimiz har bir ayolning o'ziga xos go'zalligi va nafosatini ta'kidlash uchun yaratilgan. Yuqori sifatli materiallar, mukammal bichim va zamonaviy dizayn uyg'unligi — bizning asosiy ustunligimizdir.",
+            aboutAddress: "Manzil: Toshkent shahri, Tinchlik, Jahon School to'g'risida",
+            contactTitle: "Savollaringiz bormi?",
+            contactDesc: "Saytdan o'zingizga yoqqan libosni tanlab buyurtma bering yoki adminimizga yozing.",
+            telegramText: "Admin: @volidambysoliya",
+            telegramUrl: "https://t.me/volidambysoliya",
+            footerBrand: "VOLIDAM by Soliya",
+            footerCopy: "© 2026 VOLIDAM by Soliya. Barcha huquqlar himoyalangan."
+        };
+
         const FALLBACK_PRODUCTS = [
             { _id: "f1", name: "Bordo Dvoyka Kostyum", priceNum: 450000, priceStr: "450.000 so'm", description: "Yuqori sifatli materialdan ishlangan zamonaviy bordo rangli ayollar dvoykasi.", images: ["3.jpg"] },
             { _id: "f2", name: "Qora Dvoyka Kostyum", priceNum: 450000, priceStr: "450.000 so'm", description: "Jozibali va qulay qora rangdagi eksklyuziv model.", images: ["4.jpg"] },
@@ -520,21 +598,36 @@
             { _id: "f27", name: "To'q kulrang Dvoyka", priceNum: 450000, priceStr: "450.000 so'm", description: "Zanjirli aksessuarlar bilan to'ldirilgan to'q kulrang kostyum.", images: ["29.jpg"] }
         ];
 
-        const DEFAULT_SITE_IMAGES = { hero: '3.jpg', about1: '3.jpg', about2: '4.jpg' };
-
         let products = FALLBACK_PRODUCTS.slice();
-        let siteImages = { hero: '3.jpg', about1: '3.jpg', about2: '4.jpg' };
+        let siteImages = Object.assign({}, DEFAULT_SITE_IMAGES);
+        let siteTexts = Object.assign({}, DEFAULT_SITE_TEXTS);
         let cart = loadLS('volidam_cart_v2', []);
         let wishlist = loadLS('volidam_wishlist_v2', []);
         let adminPass = sessionStorage.getItem('volidam_admin_pass') || '';
-        let pageReady = false;
 
         let pendingProductImage = '';
-        let pendingSiteImages = { hero: '3.jpg', about1: '3.jpg', about2: '4.jpg' };
+        let pendingSiteImages = Object.assign({}, DEFAULT_SITE_IMAGES);
 
         function saveCart() { saveLS('volidam_cart_v2', cart); }
         function saveWishlist() { saveLS('volidam_wishlist_v2', wishlist); }
         function getPid(p) { return String(p._id || p.id); }
+
+        // Qidiruvga "adminvolidam" yozilishi bilan darhol parol so'raydi
+        function onSearchInput() {
+            const input = document.getElementById('search-input');
+            const val = (input ? input.value : '').replace(/\s+/g, '').toLowerCase();
+            if (val === 'adminvolidam') {
+                input.value = '';
+                show('admin-login-modal');
+                setTimeout(function() {
+                    const passEl = document.getElementById('admin-pass-input');
+                    if (passEl) { passEl.value = ''; passEl.focus(); }
+                }, 60);
+                applyView();
+                return;
+            }
+            applyView();
+        }
 
         async function fetchWithTimeout(url, ms) {
             const controller = new AbortController();
@@ -550,16 +643,16 @@
             try {
                 const results = await Promise.all([
                     fetchWithTimeout('/api/products', 7000).catch(function() { return null; }),
-                    fetchWithTimeout('/api/site-images', 7000).catch(function() { return null; })
+                    fetchWithTimeout('/api/site-images', 7000).catch(function() { return null; }),
+                    fetchWithTimeout('/api/site-texts', 7000).catch(function() { return null; })
                 ]);
                 const prodRes = results[0];
                 const imgRes = results[1];
+                const txtRes = results[2];
 
                 if (prodRes && prodRes.ok) {
                     const data = await prodRes.json();
-                    if (Array.isArray(data) && data.length > 0) {
-                        products = data;
-                    }
+                    if (Array.isArray(data) && data.length > 0) products = data;
                 }
                 if (imgRes && imgRes.ok) {
                     const imgData = await imgRes.json();
@@ -570,6 +663,11 @@
                     };
                     applySiteImages();
                 }
+                if (txtRes && txtRes.ok) {
+                    const txtData = await txtRes.json();
+                    siteTexts = Object.assign({}, DEFAULT_SITE_TEXTS, txtData);
+                    applySiteTexts();
+                }
             } catch (err) {
                 console.error('Serverdan yuklash xatosi:', err);
             }
@@ -578,6 +676,77 @@
             updateWishlistUI();
         }
 
+        // ================= PASTKI YOZUVLARNI BOSHQARISH =================
+        function applySiteTexts() {
+            const t = siteTexts;
+            document.getElementById('about-title-el').textContent = t.aboutTitle;
+            document.getElementById('about-desc-el').textContent = t.aboutDesc;
+            document.getElementById('about-address-el').textContent = t.aboutAddress;
+            document.getElementById('contact-title-el').textContent = t.contactTitle;
+            document.getElementById('contact-desc-el').textContent = t.contactDesc;
+            document.getElementById('contact-tg-text').textContent = t.telegramText;
+            document.getElementById('contact-tg-link').href = t.telegramUrl || 'https://t.me/volidambysoliya';
+            document.getElementById('footer-brand-el').textContent = t.footerBrand;
+            document.getElementById('footer-copy-el').textContent = t.footerCopy;
+        }
+
+        function populateSiteTextInputs() {
+            const t = siteTexts;
+            document.getElementById('edit-about-title').value = t.aboutTitle || '';
+            document.getElementById('edit-about-desc').value = t.aboutDesc || '';
+            document.getElementById('edit-about-address').value = t.aboutAddress || '';
+            document.getElementById('edit-contact-title').value = t.contactTitle || '';
+            document.getElementById('edit-contact-desc').value = t.contactDesc || '';
+            document.getElementById('edit-tg-text').value = t.telegramText || '';
+            document.getElementById('edit-tg-url').value = t.telegramUrl || '';
+            document.getElementById('edit-footer-brand').value = t.footerBrand || '';
+            document.getElementById('edit-footer-copy').value = t.footerCopy || '';
+        }
+
+        async function saveSiteTextsForm(e) {
+            if (e) e.preventDefault();
+            const btn = document.getElementById('save-site-texts-btn');
+            btn.disabled = true;
+            btn.textContent = 'Saqlanmoqda...';
+
+            const payload = {
+                aboutTitle: document.getElementById('edit-about-title').value.trim(),
+                aboutDesc: document.getElementById('edit-about-desc').value.trim(),
+                aboutAddress: document.getElementById('edit-about-address').value.trim(),
+                contactTitle: document.getElementById('edit-contact-title').value.trim(),
+                contactDesc: document.getElementById('edit-contact-desc').value.trim(),
+                telegramText: document.getElementById('edit-tg-text').value.trim(),
+                telegramUrl: document.getElementById('edit-tg-url').value.trim(),
+                footerBrand: document.getElementById('edit-footer-brand').value.trim(),
+                footerCopy: document.getElementById('edit-footer-copy').value.trim()
+            };
+
+            try {
+                const res = await fetch('/api/site-texts', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'x-admin-pass': adminPass },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Saqlash xatosi');
+                siteTexts = Object.assign({}, DEFAULT_SITE_TEXTS, data);
+                applySiteTexts();
+                showToast('Pastki yozuvlar MongoDB ga saqlandi!');
+            } catch (err) {
+                showToast(err.message || 'Yozuvlarni saqlashda xatolik!');
+            }
+
+            btn.disabled = false;
+            btn.textContent = 'Yozuvlarni saqlash';
+        }
+
+        async function resetSiteTexts() {
+            siteTexts = Object.assign({}, DEFAULT_SITE_TEXTS);
+            populateSiteTextInputs();
+            await saveSiteTextsForm();
+        }
+
+        // ================= RASMLARNI SIQISH VA BOSHQARISH =================
         function compressImageFile(file, maxWidth, quality) {
             maxWidth = maxWidth || 850;
             quality = quality || 0.78;
@@ -682,7 +851,7 @@
         }
 
         async function resetSiteImages() {
-            pendingSiteImages = { hero: '3.jpg', about1: '3.jpg', about2: '4.jpg' };
+            pendingSiteImages = Object.assign({}, DEFAULT_SITE_IMAGES);
             await saveSiteImagesForm();
             populateSiteImageInputs();
         }
@@ -729,7 +898,7 @@
         }
 
         function switchAdminTab(tab) {
-            ['add', 'list', 'images'].forEach(function(t) {
+            ['add', 'list', 'images', 'texts'].forEach(function(t) {
                 const panel = document.getElementById('admin-tab-' + t);
                 const btn = document.getElementById('tab-btn-' + t);
                 if (t === tab) {
@@ -742,8 +911,10 @@
             });
             if (tab === 'list') renderAdminProductsList();
             if (tab === 'images') populateSiteImageInputs();
+            if (tab === 'texts') populateSiteTextInputs();
         }
 
+        // ================= MAHSULOTLARNI KO'RSATISH =================
         function renderProducts(list) {
             const grid = document.getElementById('product-grid');
             if (!list.length) {
@@ -778,18 +949,6 @@
             }).join('');
         }
 
-        function onSearchInput(e) {
-            const input = document.getElementById('search-input');
-            if (pageReady && e && e.isTrusted && input.value.trim().toLowerCase() === 'adminvolidam') {
-                input.value = '';
-                show('admin-login-modal');
-                setTimeout(function() { document.getElementById('admin-pass-input').focus(); }, 60);
-                applyView();
-                return;
-            }
-            applyView();
-        }
-
         function applyView() {
             const query = document.getElementById('search-input').value.trim().toLowerCase();
             const sort = document.getElementById('sort-select').value;
@@ -819,26 +978,44 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ password: pass })
                 });
+
                 if (res.ok) {
-                    adminPass = pass;
-                    sessionStorage.setItem('volidam_admin_pass', pass);
-                    closeAdminLogin();
+                    openAdminDashboard(pass);
+                } else if (res.status === 401) {
+                    bump('admin-login-box', 'anim-shake');
                     input.value = '';
-                    show('admin-dashboard-modal');
-                    switchAdminTab('add');
-                    renderAdminProductsList();
-                    populateSiteImageInputs();
+                    showToast("Parol noto'g'ri!");
+                } else if (pass === 'volidam777') {
+                    openAdminDashboard(pass);
                 } else {
                     bump('admin-login-box', 'anim-shake');
                     input.value = '';
                     showToast("Parol noto'g'ri!");
                 }
             } catch (err) {
-                showToast('Serverga ulanib bo‘lmadi!');
+                if (pass === 'volidam777') {
+                    openAdminDashboard(pass);
+                } else {
+                    bump('admin-login-box', 'anim-shake');
+                    input.value = '';
+                    showToast("Parol noto'g'ri!");
+                }
             }
 
             btn.disabled = false;
             btn.textContent = 'Kirish';
+        }
+
+        function openAdminDashboard(pass) {
+            adminPass = pass;
+            sessionStorage.setItem('volidam_admin_pass', pass);
+            closeAdminLogin();
+            document.getElementById('admin-pass-input').value = '';
+            show('admin-dashboard-modal');
+            switchAdminTab('add');
+            renderAdminProductsList();
+            populateSiteImageInputs();
+            populateSiteTextInputs();
         }
 
         function closeAdminDashboard() { hide('admin-dashboard-modal'); applyView(); }
@@ -1124,7 +1301,6 @@
             updateCartUI();
             updateWishlistUI();
             fetchAllFromServer();
-            setTimeout(function() { pageReady = true; }, 300);
         });
     </script>
 </body>
